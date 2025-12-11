@@ -18,7 +18,7 @@ export const getInsideFileApi = async (currentPath) => {
     // console.log(data)
     return data;
 }
-
+    
 
 export const getFileApi = async() => {
     const response = await fetch("http://localhost:3000")

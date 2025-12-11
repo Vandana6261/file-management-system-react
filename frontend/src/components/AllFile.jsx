@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import { getApiCalling, getInsideFileApi, getFileApi } from "../api/fileApi.js";
 
 
-function AllFile({backword, forward,setBackword, setForward}) {
-  const [home, setHome] = useState("");
-  const [currentPath, setCurrentPath] = useState("");
-  const [filesData, setFilesData] = useState([]);
+function AllFile({backword, forward, setBackword, setForward, home, setHome, currentPath, setCurrentPath, filesData, setFilesData}) {
+  // const [home, setHome] = useState("");
+  // const [currentPath, setCurrentPath] = useState("");
+  // const [filesData, setFilesData] = useState([]);
   const [message, setMessage] = useState("");
   
 
@@ -16,7 +16,8 @@ function AllFile({backword, forward,setBackword, setForward}) {
       setHome(home);
       setFilesData(allDir);
       setCurrentPath(home);
-      setBackword(home)
+      setBackword(home);
+      console.log(currentPath)
     });
   }, []);
 
@@ -31,9 +32,9 @@ function AllFile({backword, forward,setBackword, setForward}) {
       const files = await getFileApi()
       if(files) {
         setCurrentPath(path)
-        console.log(files.filteredFile)
-        setFilesData(files.
-          filteredFile)
+        setBackword(prev => [...prev, path])
+        // console.log(files.filteredFile)
+        setFilesData(files.filteredFile)
       }
     }
 

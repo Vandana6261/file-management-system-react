@@ -2,8 +2,24 @@ import React from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { FaArrowRight } from "react-icons/fa";
 
-function Header({backword, forward,setBackword, setForward}) {
+function Header({backword, forward, setBackword, setForward, home, setHome, currentPath, setCurrentPath, filesData, setFilesData}) {
 
+  function updateBackword() {
+    // console.log("Clicked")
+    let lastIndexOf = currentPath.lastIndexOf("\\")
+    setBackword(prev => prev.slice(0, -1))
+    
+    // console.log(currentPath)
+    // console.log(lastIndexOf)
+    // let path = currentPath.slice(0, lastIndexOf)
+    // console.log(path)
+    // setCurrentPath(currentPath.slice(0, lastIndexOf))
+    // console.log("23")
+  }
+
+  const updateForward = () => {
+
+  }
   
   return (
     <>
@@ -12,7 +28,7 @@ function Header({backword, forward,setBackword, setForward}) {
         <div className="top-left flex items-center gap-4 w-1/2 ">
           <div className="icons-div flex gap-2">
             <span className="p-4 rounded bg-gray-600/50 transition-all duration-200 hover:scale-90"
-            onClick={() => updateBackword}
+            onClick={updateBackword}
             >
               <FaArrowLeft />
             </span>

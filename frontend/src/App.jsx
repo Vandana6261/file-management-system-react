@@ -8,6 +8,9 @@ function App() {
 
   const [backword, setBackword] = useState([])
   const [forward, setForward] = useState([])
+  const [home, setHome] = useState("");
+  const [currentPath, setCurrentPath] = useState("");
+  const [filesData, setFilesData] = useState([]);
 
   return (
     <>
@@ -16,8 +19,8 @@ function App() {
             <AsideBox />
           </div>
           <div className="w-4/5">
-            <Header backword={backword} setBackword={setBackword} forward={forward} setForward={setForward} />
-            <AllFile backword={backword} setBackword={setBackword} forward={forward} setForward={setForward}/>
+            <Header backword={backword} setBackword={setBackword} forward={forward} setForward={setForward} home={home} setHome={setHome} currentPath={currentPath} setCurrentPath={setCurrentPath} filesData={filesData} setFilesData={setFilesData} />
+            <AllFile backword={backword} setBackword={setBackword} forward={forward} setForward={setForward} home={home} setHome={setHome} currentPath={currentPath} setCurrentPath={setCurrentPath} filesData={filesData} setFilesData={setFilesData} />
           </div>
       </div>
     </>
