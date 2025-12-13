@@ -1,13 +1,25 @@
 import React from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { FaArrowRight } from "react-icons/fa";
+import useFileManager from './hooks/useFileManager';
+import { getFileApi } from './../api/fileApi';
 
-function Header({backword, forward, setBackword, setForward, home, setHome, currentPath, setCurrentPath, filesData, setFilesData}) {
+function Header() {
+  const { backword, setBackword, getInsideFileApi } = useFileManager()
 
   function updateBackword() {
     // console.log("Clicked")
-    let lastIndexOf = currentPath.lastIndexOf("\\")
-    setBackword(prev => prev.slice(0, -1))
+    // let lastIndexOf = backword.lastIndexOf("\\")
+    console.log(backword[0].length)
+    console.log(backword[0])
+    // console.log(backword[1])
+    if(backword.length > 1) {
+      console.log(backword.length)
+      let lastVisitedPath = backword[backword.length-1]
+      console.log(lastVisitedPath)
+      // getInsideFileApi(lastVisitedPath)
+    }
+    // setBackword(prev => prev.slice(0, -1))
     
     // console.log(currentPath)
     // console.log(lastIndexOf)

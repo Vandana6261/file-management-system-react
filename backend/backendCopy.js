@@ -25,6 +25,7 @@ app.use((req, res, next) => {
 
 // first time call
 app.get("/home", (req, res) => {
+  // console.log("Initial api calling")
   fs.readdir(home, (err, fileNames) => {
     if (err) return res.status(500).json({ error: err.message });
     let filteredFile = filterDot(fileNames);
@@ -43,7 +44,7 @@ app.post("", (req, res) => {
   // console.log(req.body)
   // pwd += "/"+req.body.file;
   pwd = req.body.filePath;
-  console.log(pwd);
+  console.log("pwd", pwd);
   res.json({
     message: "Success",
     data: req.body,
@@ -54,9 +55,10 @@ app.post("", (req, res) => {
 app.get("", (req, res) => {
   fs.readdir(pwd, (err, fileNames) => {
     // console.log(pwd);
+    // console.log("API called")
     if (err) {
-      console.log(pwd);
-      console.log(err);
+      console.log("pwd", pwd);
+      console.log("err", err);
       return res.json("");
     }
     if (fileNames) {
