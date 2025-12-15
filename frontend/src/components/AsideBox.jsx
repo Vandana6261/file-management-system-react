@@ -5,7 +5,7 @@ function AsideBox() {
   const [active, setActive] = useState("My Files");
 
   return (
-    <div className="w-full bg-[#212121] py-4 px-2 border-r-2 h-screen text-white">
+    <div className="w-full bg-[#212121] py-4 px-2 border-r-2 h-screen overflow-hidden sticky top-0 text-white">
       <div>
         <h2 className="font-bold text-2xl text-center">File Manager</h2>
         <ul className="flex flex-col gap-0 mt-4 ">
