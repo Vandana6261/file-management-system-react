@@ -1,41 +1,41 @@
 import React from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { FaArrowRight } from "react-icons/fa";
-import useFileManager from './hooks/useFileManager';
-import { getFileApi } from './../api/fileApi';
+import useFileManager from '../hooks/useFileManager';
+import useFileContext from './../context/FileContext';
 
 function Header() {
-  const { backword, setBackword, getInsideFileApi } = useFileManager()
+  const {backword, setBackword, currentPath, forward, setForward} = useFileContext()
+  const {getInsideFileApi, loadFiles} = useFileManager()
 
-  function updateBackword() {
-    // console.log("Clicked")
-    // let lastIndexOf = backword.lastIndexOf("\\")
-    console.log(backword[0].length)
-    console.log(backword[0])
-    // console.log(backword[1])
-    if(backword.length > 1) {
-      console.log(backword.length)
-      let lastVisitedPath = backword[backword.length-1]
-      console.log(lastVisitedPath)
-      // getInsideFileApi(lastVisitedPath)
-    }
-    // setBackword(prev => prev.slice(0, -1))
+  const updateBackword = () => {
+    // console.log("backword", backword)
+    // console.log("forward", forward)
     
-    // console.log(currentPath)
-    // console.log(lastIndexOf)
-    // let path = currentPath.slice(0, lastIndexOf)
-    // console.log(path)
-    // setCurrentPath(currentPath.slice(0, lastIndexOf))
-    // console.log("23")
+    if(backword.length > 1 ) {
+      let lastVisitedPath = backword[backword.length-1]
+      setForward(prev => [...prev, currentPath])
+      getInsideFileApi(lastVisitedPath)
+    }  else {
+      if(backword.length > 0) loadFiles(backword[0])
+    }
   }
 
   const updateForward = () => {
-
+    // console.log("udateForward clicked")
+    // console.log("backword", backword)
+    // console.log("forward", forward)
+    if(forward.length > 0) {
+      // setForward(prev => prev.slice(0, -1))
+      let lastVisitedPath = forward[forward.length-1]
+      setBackword(prev => [...prev, lastVisitedPath])
+      getInsideFileApi(lastVisitedPath)
+    }
   }
-  
+
   return (
     <>
-      <header className="flex justify-between items-center w-full p-4 text-white border-b-2 border-[#00796B]">
+      <header className="flex justify-between items-center sticky top-0 bg-gray-800 z-20 w-full p-4 text-white border-b-2 border-[#00796B]">
         {/* left part of header */}
         <div className="top-left flex items-center gap-4 w-1/2 ">
           <div className="icons-div flex gap-2">
@@ -45,7 +45,7 @@ function Header() {
               <FaArrowLeft />
             </span>
             <span className="p-4 rounded bg-gray-600/50 transition-all duration-200 hover:scale-90"
-            onClick={() => updateForward}
+            onClick={updateForward}
             >
               <FaArrowRight />
             </span>
@@ -65,6 +65,11 @@ function Header() {
             <button className="bg-[#00796B] px-4 py-2 rounded transition-all duration-200 hover:rotate-6 hover:scale-105">Add File</button>
         </div>
       </header> 
+      {/* <div className="text-white">
+        <p>{backword} : backword</p>
+        <p>{forward} : forward</p>
+        <p>{currentPath} : currentPath</p>
+      </div> */}
     </>
   );
 }
