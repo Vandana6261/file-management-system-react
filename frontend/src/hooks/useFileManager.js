@@ -5,15 +5,13 @@ function useFileManager() {
     const {currentPath, setCurrentPath, message, setMessage, filesData, setFilesData, backword, setBackword, forward, setForward} = useFileContext()
 
   async function loadFiles() {
-    // console.log("load file initially")
     try {
       const response = await fetch("http://localhost:3000/home");
       if (!response) {
         console.log("Internal Server Error");
       } else {
         const data = await response.json();
-        // console.log(data)
-        setFilesData(data.filteredFile);
+        setFilesData(data.body)
         setCurrentPath(data.home);
         setBackword((prev) => [data.home]);
         setForward([])
@@ -27,12 +25,7 @@ function useFileManager() {
     loadFiles();
   }, []);
 
-  // useEffect(() => {
-  //     getInsideFileApi()
-  // }, [path])
-
   const getInsideFileApi = async (path) => {
-    // console.log("getInsideFileApi")
     const response = await fetch("http://localhost:3000", {
       method: "POST",
       headers: {
@@ -51,17 +44,13 @@ function useFileManager() {
   };
 
   const getFileApi = async (path) => {
-    // console.log("File data loaded")
     const response = await fetch("http://localhost:3000");
     if (!response.ok) {
       setMessage("error");
     } else {
       const data = await response.json();
+      console.log(data.filteredFile)
       if (Array.isArray(data.filteredFile)) {
-        // console.log(currentPath)
-        // console.log(path);
-        // console.log("backword", backword);
-
         if(backword[backword.length - 1] == path) {
           setBackword(prev => prev.slice(0, -1))
         } else if(forward[forward.length - 1] == path) {
@@ -70,10 +59,8 @@ function useFileManager() {
         else {
           setBackword(prev => [...prev, currentPath])
         }
-
-        // if(backword.length == 0) setBackword(path)
         setCurrentPath(path);
-        setFilesData((prev) => data.filteredFile);
+        setFilesData((prev) => data.body);
         setMessage(data.message);
         
       }
