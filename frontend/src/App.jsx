@@ -6,11 +6,6 @@ import AllFile from './components/AllFile';
 
 
 function App() {
-  const [backword, setBackword] = useState([])
-  const [forward, setForward] = useState([])
-  const [home, setHome] = useState("");
-  const [currentPath, setCurrentPath] = useState("");
-  const [filesData, setFilesData] = useState([]);
 
   return (
     <>
