@@ -25,12 +25,13 @@ function AllFile() {
                 key={index}
                 className="file bg-[#3E3E42] w-30 h-30 rounded flex flex-col justify-center items-center transition-all duration-200 hover:-translate-y-1.5 hover:scale-105  "
               >
-                <div>icon</div>
+                <div>{item.icon}</div>
                 <p
                   className="mx-4 truncate w-full text-center p-2 cursor-pointer"
                   onClick={(e) => getInsideFile(e)}
                 >
-                  {item}
+                  {/* {item} */}
+                  {item.name}
                 </p>
               </div>
             );
