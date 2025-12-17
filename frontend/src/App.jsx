@@ -14,9 +14,6 @@ function App() {
             <AsideBox />
           </div>
           <div className="w-4/5  ">
-            {/* <Header backword={backword} setBackword={setBackword} forward={forward} setForward={setForward} home={home} setHome={setHome} currentPath={currentPath} setCurrentPath={setCurrentPath} filesData={filesData} setFilesData={setFilesData} /> */}
-            {/* <AllFile backword={backword} setBackword={setBackword} forward={forward} setForward={setForward} home={home} setHome={setHome} currentPath={currentPath} setCurrentPath={setCurrentPath} filesData={filesData} setFilesData={setFilesData} /> */}
-
               <Header />
               <AllFile />
 
