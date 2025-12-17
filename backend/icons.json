@@ -29,6 +29,7 @@
   },
 
   "files": {
+    "default": { "icon": "📄" },
     "pdf": { "icon": "📄" },
     "txt": { "icon": "📝" },
     "doc": { "icon": "📄" },
@@ -72,6 +73,10 @@
     "dll": { "icon": "🔗" },
     "sys": { "icon": "⚙️" },
     "iso": { "icon": "💿" }
+  },
+
+  "default": {
+      "file": { "icon": "📄"}
   }
 }
 
