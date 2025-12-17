@@ -2,9 +2,6 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 const icons = require("./icons.json")
-// console.log("icons line no 6th")
-// console.log(icons)
-//  console.log(icons.folders.default.icon)
 
 const app = express();
 
