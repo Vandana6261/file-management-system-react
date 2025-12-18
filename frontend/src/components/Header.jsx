@@ -9,8 +9,8 @@ function Header() {
   const {getInsideFileApi, loadFiles} = useFileManager()
 
   const updateBackword = () => {
-    // console.log("backword", backword)
-    // console.log("forward", forward)
+    console.log("backword", backword)
+    console.log("forward", forward)
     
     if(backword.length > 1 ) {
       let lastVisitedPath = backword[backword.length-1]
