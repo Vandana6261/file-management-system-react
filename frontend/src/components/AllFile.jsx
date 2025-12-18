@@ -3,14 +3,13 @@ import useFileContext from "../context/FileContext"
 import useFileManager from '../hooks/useFileManager.js';
 
 function AllFile() {
-  const {currentPath, setCurrentPath, filesData} = useFileContext()
+  const {currentPath, setCurrentPath, filesData, backword} = useFileContext()
   const {getInsideFileApi, getFileApi} = useFileManager()
 
   const getInsideFile = (e) => {
-    // console.log(currentPath)
     const clickedFile = e.target.textContent;
     let path = `${currentPath}\\${clickedFile}`
-    console.log(path)
+    console.log(backword)
     getInsideFileApi(path)
   }
   
@@ -19,7 +18,7 @@ function AllFile() {
       <div className="text-white w-full p-4 ">
         <div className="files flex flex-wrap mt-4 gap-4 ">
           {/* <div>{backword}</div> */}
-          {filesData.map((item, index) => {
+          {filesData && filesData.map((item, index) => {
             return (
               <div
                 key={index}
