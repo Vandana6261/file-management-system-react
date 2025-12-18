@@ -2,8 +2,10 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 const icons = require("./icons.json")
+const { exec } = require("child_process")
 
 const app = express();
+
 
 app.use(
   cors({
@@ -18,6 +20,40 @@ const home = require("os").homedir();
 let pwd = home;
 const fs = require("fs");
 
+const platformCommands = [
+  { platform: "aix", cmd: "xdg-open" },
+  { platform: "darwin", cmd: "open" },
+  { platform: "freebsd", cmd: "xdg-open" },
+  { platform: "linux", cmd: "xdg-open" },
+  { platform: "openbsd", cmd: "xdg-open" },
+  { platform: "sunos", cmd: "xdg-open" },
+  { platform: "win32", cmd: "start" },
+  { platform: "android", cmd: "am start" },
+  { platform: "ios", cmd: "open" }
+];
+
+function fileOpener(path) {
+  let cmd = "start";
+  let command = `${cmd} "" "${path}"`
+  let osType = process.platform;
+  console.log(osType)
+
+  
+
+  exec(command, (error, stdout, stderr) => {
+    if(error) {
+      console.log("Error: ", error);
+      return;
+    }
+    if(stderr) {
+      console.log("Stderr", stderr);
+    }
+    if(stdout) {
+      console.log("File open successfully");
+    }
+  })
+}
+
 // this is check what frontend is requesting
 app.use((req, res, next) => {
   console.log("REQUEST: ", req.method, req.url);
@@ -28,7 +64,6 @@ app.use((req, res, next) => {
 app.get("/home", (req, res) => {
   fs.readdir(home, (err, fileNames) => {
     if (err) return res.status(500).json({ error: err.message });
-    console.log("35 line called")
     let filteredFile = filterDot(fileNames);
     let filesWithIcon = getFilesWithIcons(home, filteredFile)
     res.json({
@@ -42,11 +77,12 @@ app.get("/home", (req, res) => {
 
 
 let file;
-// call from the getInsideFile function
+// call from the getInsideFileApi function
 app.post("", (req, res) => {
-  file = req.body.file;
+  file = req.body.filePath;
+  console.log("Post Called with path ", file)
   pwd = path.normalize(req.body.filePath);
-  console.log("pwd", pwd);
+  console.log("response send")
   res.json({
     message: "Success",
     data: req.body,
@@ -55,38 +91,29 @@ app.post("", (req, res) => {
 
 // call from getFile function
 app.get("", (req, res) => {
-  fs.readdir(pwd, (err, fileNames) => {
-    if (err) {
-      console.log("pwd", pwd);
-      console.log("err", err);
-      return res.json("");
-    }
-    if (fileNames) {
-      let filesWithIcon = getFilesWithIcons(pwd, filterDot(fileNames))
-      res.json({
-        filteredFile: filterDot(fileNames),
-        body: filesWithIcon,
-        message: "File send",
-      });
-    }
-  });
-
-
-  // if(fs.statSync(pwd).isDirectory()) 
-  //   {
-  //     // send the data inside this dir
-  //     readDirectory(pwd)
-  //     .then((response) => {
-  //       console.log(response)
-  //     }).catch((error) => {
-  //       console.log(error.message)
-  //     })
+  console.log("Get is called with path ", pwd)
+  if(fs.statSync(pwd).isDirectory()) 
+    {
+      // send the data inside this dir
+      readDirectory(pwd)
+      .then((response) => {
+        res.json({
+          body: response,
+          message: "File send",
+        })
+      }).catch((error) => {
+        console.log(error.message)
+        res.json({
+          messsage: "System has no permission to open this file of folder"
+        })
+      })
       
-  //   }
-  //   else 
-  //   {
-  //     // open file
-  //   }
+    }
+    else 
+    {
+      // open file
+      fileOpener(pwd);
+    }
   
 
 });
@@ -121,7 +148,7 @@ function isDirectory(way, file) {
   return fs.statSync(path.join(way, file)).isDirectory()
 }
 
-// iske andar each Item aa raha hai , us file ya folder ka jo ki user ne click kiya hai, ya home se call kiya hai to home ka path and home k andr jo bhi files and Folders hai unka array aa raha hai 
+
 function getFilesWithIcons(path, filesOrFoldersArr) 
 {
   let filesWithIcon = []
@@ -158,6 +185,7 @@ function getFilesWithIcons(path, filesOrFoldersArr)
 }
 
 function readDirectory(pwd) {
+  console.log("readDirectory called")
   return new Promise((resolve, reject) => {
     fs.readdir(pwd, (err, fileNames) => {
       if(err) {
@@ -165,14 +193,12 @@ function readDirectory(pwd) {
         reject(err)
       }
       if(fileNames) {
-        // return getFilesWithIcons(pwd, filterDot(filesNames))
-        // resolve(getFilesWithIcons(pwd, filterDot(filesNames)))
-        // resolve(true)
+        resolve(getFilesWithIcons(pwd, filterDot(fileNames))) 
       }
     })
   })
 }
 
-console.log("home", home)
+
 
 
