@@ -26,6 +26,8 @@ function useFileManager() {
   }, []);
 
   const getInsideFileApi = async (path) => {
+    console.log("getInsideFile Api called")
+    console.log(path)
     const response = await fetch("http://localhost:3000", {
       method: "POST",
       headers: {
@@ -44,13 +46,13 @@ function useFileManager() {
   };
 
   const getFileApi = async (path) => {
+    console.log("get api called")
     const response = await fetch("http://localhost:3000");
     if (!response.ok) {
       setMessage("error");
     } else {
       const data = await response.json();
-      console.log(data.filteredFile)
-      if (Array.isArray(data.filteredFile)) {
+      if (Array.isArray(data.body)) {
         if(backword[backword.length - 1] == path) {
           setBackword(prev => prev.slice(0, -1))
         } else if(forward[forward.length - 1] == path) {
@@ -61,8 +63,10 @@ function useFileManager() {
         }
         setCurrentPath(path);
         setFilesData((prev) => data.body);
-        setMessage(data.message);
         
+      }
+      else {
+        setMessage(data.message);
       }
     }
   };
