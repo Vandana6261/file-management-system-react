@@ -3,9 +3,11 @@ import './App.css'
 import AsideBox from './components/AsideBox';
 import Header from './components/Header';
 import AllFile from './components/AllFile';
+import CreateFile from './components/CreateFile';
 
 
 function App() {
+  const [open, setOpen] = useState(false);
 
   return (
     <>
@@ -14,11 +16,11 @@ function App() {
             <AsideBox />
           </div>
           <div className="w-4/5  ">
-              <Header />
+              <Header open={open} setOpen={setOpen}/>
               <AllFile />
-
           </div>
       </div>
+      <CreateFile open={open} setOpen={setOpen}/>
     </>
   )
 }
