@@ -3,7 +3,7 @@ import './App.css'
 import AsideBox from './components/AsideBox';
 import Header from './components/Header';
 import AllFile from './components/AllFile';
-import CreateFile from './components/CreateFile';
+import CreateFileModal from './components/CreateFile';
 
 
 function App() {
@@ -20,7 +20,7 @@ function App() {
               <AllFile />
           </div>
       </div>
-      <CreateFile open={open} setOpen={setOpen}/>
+      <CreateFileModal open={open} setOpen={setOpen}/>
     </>
   )
 }
