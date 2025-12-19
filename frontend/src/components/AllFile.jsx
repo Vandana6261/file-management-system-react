@@ -26,10 +26,9 @@ function AllFile() {
               >
                 <div>{item.icon}</div>
                 <p
-                  className="mx-4 truncate w-full text-center p-2 cursor-pointer"
-                  onClick={(e) => getInsideFile(e)}
+                  className="mx-4 select-none truncate w-full text-center p-2 cursor-pointer"
+                  onDoubleClick={(e) => getInsideFile(e)}
                 >
-                  {/* {item} */}
                   {item.name}
                 </p>
               </div>
