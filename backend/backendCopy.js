@@ -32,27 +32,6 @@ const platformCommands = [
   { platform: "ios", cmd: "open" }
 ];
 
-function fileOpener(path) {
-  let cmd = "start";
-  let command = `${cmd} "" "${path}"`
-  let osType = process.platform;
-  console.log(osType)
-
-  
-
-  exec(command, (error, stdout, stderr) => {
-    if(error) {
-      console.log("Error: ", error);
-      return;
-    }
-    if(stderr) {
-      console.log("Stderr", stderr);
-    }
-    if(stdout) {
-      console.log("File open successfully");
-    }
-  })
-}
 
 // this is check what frontend is requesting
 app.use((req, res, next) => {
@@ -61,7 +40,8 @@ app.use((req, res, next) => {
 });
 
 // first time call
-app.get("/home", (req, res) => {
+app.get("/home", (req, res) => 
+{
   fs.readdir(home, (err, fileNames) => {
     if (err) return res.status(500).json({ error: err.message });
     let filteredFile = filterDot(fileNames);
@@ -78,7 +58,8 @@ app.get("/home", (req, res) => {
 
 let file;
 // call from the getInsideFileApi function
-app.post("", (req, res) => {
+app.post("", (req, res) => 
+{
   file = req.body.filePath;
   console.log("Post Called with path ", file)
   pwd = path.normalize(req.body.filePath);
@@ -91,7 +72,7 @@ app.post("", (req, res) => {
 
 // call from getFile function
 app.get("", (req, res) => {
-  console.log("Get is called with path ", pwd)
+  // console.log("Get is called with path ", pwd)
   if(fs.statSync(pwd).isDirectory()) 
     {
       // send the data inside this dir
@@ -118,10 +99,41 @@ app.get("", (req, res) => {
 
 });
 
+// to create a file or folder
+app.post("/create", (req, res) => {
+  let fileName = req.body.fileOrFolderName;
+  let fileType = req.body.type;
+  let currentPath = req.body.path;
+  
+  destination = path.join(currentPath, fileName)
+  console.log(fileType)
+  if(fileType == "file") 
+  {
+    fs.writeFile(destination, "", (err) => {
+      if(err) console.log("Error while creating file : ", err);
+      // console.log("File created");
+      return res.json({
+        message: "File Created Successfully"
+      })
+    })
+  }
+  else 
+  {
+    fs.mkdir(destination, (err) => {
+      if(err) console.log("Error while creating Folder: ", err);
+      return res.json({
+        message: "Folder Created Successfully"
+      })
+    })
+  }
+})
+
 // to delete any particular file
-app.delete("/delete", (req, res) => {
+app.delete("/delete", (req, res) => 
+{
   let filePath = req.body;
-  fs.unlink(filePath, (err) => {
+  fs.unlink(filePath, (err) => 
+  {
     if (err) {
       console.log("Error is here");
       console.log("Error: ", err.message);
@@ -184,10 +196,13 @@ function getFilesWithIcons(path, filesOrFoldersArr)
   return filesWithIcon;
 }
 
-function readDirectory(pwd) {
+function readDirectory(pwd) 
+{
   console.log("readDirectory called")
-  return new Promise((resolve, reject) => {
-    fs.readdir(pwd, (err, fileNames) => {
+  return new Promise((resolve, reject) => 
+  {
+    fs.readdir(pwd, (err, fileNames) => 
+    {
       if(err) {
         console.log("Error occured while reading Directory")
         reject(err)
@@ -199,6 +214,27 @@ function readDirectory(pwd) {
   })
 }
 
+
+function fileOpener(path) 
+{
+  let osType = process.platform;
+  let osInfo = platformCommands.find((eachOsInfo) => eachOsInfo.platform == osType)
+  let osCommand = osInfo.cmd;   // -> start
+  let command = `${osCommand} "" "${path}"`
+
+  exec(command, (error, stdout, stderr) => 
+  {
+    if(error) 
+    {
+      console.log("Error: ", error);
+      return;
+    }
+    if(stderr) 
+    {
+      console.log("Stderr", stderr);
+    }
+  })
+}
 
 
 
