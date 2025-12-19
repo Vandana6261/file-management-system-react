@@ -4,7 +4,7 @@ import { FaArrowRight } from "react-icons/fa";
 import useFileManager from '../hooks/useFileManager';
 import useFileContext from './../context/FileContext';
 
-function Header() {
+function Header({setOpen, open}) {
   const {backword, setBackword, currentPath, forward, setForward} = useFileContext()
   const {getInsideFileApi, loadFiles} = useFileManager()
 
@@ -33,6 +33,7 @@ function Header() {
     }
   }
 
+  // console.log(open)
   return (
     <>
       <header className="flex justify-between items-center sticky top-0 bg-gray-800 z-20 w-full p-4 text-white border-b-2 border-[#00796B]">
@@ -62,7 +63,7 @@ function Header() {
             type="text" 
             placeholder="Search Files and Folders"
             />
-            <button className="bg-[#00796B] px-4 py-2 rounded transition-all duration-200 hover:rotate-6 hover:scale-105">Add File</button>
+            <button className="bg-[#00796B] px-4 py-2 rounded transition-all duration-200 hover:rotate-6 hover:scale-105" onClick={() => setOpen(!open)}>Add File</button>
         </div>
       </header> 
       {/* <div className="text-white">
