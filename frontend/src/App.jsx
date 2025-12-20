@@ -3,7 +3,7 @@ import './App.css'
 import AsideBox from './components/AsideBox';
 import Header from './components/Header';
 import AllFile from './components/AllFile';
-import CreateFileModal from './components/CreateFile';
+import CreateFileModal from './components/CreateFileModal';
 
 
 function App() {
