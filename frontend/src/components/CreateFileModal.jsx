@@ -11,7 +11,7 @@ function CreateFileModal({open, setOpen}) {
     const submitHandler = (e) => {
         e.preventDefault();
         console.log(currentPath, fileOrFolderName, type)
-        if((type == "files" && fileOrFolderName.includes("."))  || type == "folder") {
+        if((type == "file" && fileOrFolderName.includes("."))  || type == "folder") {
             createFileOrFolderApi(currentPath, fileOrFolderName, type);
             setFileOrFolderName("")
             setOpen(false);
