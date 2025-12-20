@@ -81,6 +81,14 @@ function AsideBox() {
           >
             ⬇️ Download
           </li>
+          <li
+            className={`border-gray-400 cursor-pointer p-2 rounded hover:translate-x-1.5 transition-all duration-200 ${
+              active == "Music" ? "bg-[#00796B]" : "hover:bg-gray-600/50"
+            }`}
+            onClick={() => setActive("Music")}
+          >
+            🎵 Music
+          </li>
         </ul>
       </div>
     </div>
