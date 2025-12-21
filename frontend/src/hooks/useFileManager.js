@@ -3,7 +3,7 @@ import useFileContext from "../context/FileContext.jsx"
 
 
 function useFileManager() {
-    const {currentPath, setCurrentPath, message, setMessage, filesData, setFilesData, backword, setBackword, forward, setForward} = useFileContext()
+    const {homeDir, setHomeDir, currentPath, setCurrentPath, message, setMessage, filesData, setFilesData, backword, setBackword, forward, setForward} = useFileContext()
 
   async function loadFiles() {
     try {
@@ -15,6 +15,7 @@ function useFileManager() {
         setFilesData(data.body)
         setCurrentPath(data.home);
         setBackword((prev) => [data.home]);
+        setHomeDir(data.home)
         setForward([])
       }
     } catch (error) {
