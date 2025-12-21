@@ -8,6 +8,7 @@ export function FileProvider({children}) {
     const [message, setMessage] = useState("")
     const [backword, setBackword] = useState([])
     const [forward, setForward] = useState([])
+    const [homeDir, setHomeDir] = useState("")
 
     return (
         <FileContext.Provider
@@ -17,6 +18,7 @@ export function FileProvider({children}) {
             message, setMessage,
             backword, setBackword,
             forward, setForward,
+            homeDir, setHomeDir,
         }}
         >
             {children}
