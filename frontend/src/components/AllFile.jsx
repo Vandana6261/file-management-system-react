@@ -3,13 +3,13 @@ import useFileContext from "../context/FileContext"
 import useFileManager from '../hooks/useFileManager.js';
 
 function AllFile() {
-  const {currentPath, setCurrentPath, filesData, backword} = useFileContext()
+  const {currentPath, setCurrentPath, filesData, backword, forward} = useFileContext()
   const {getInsideFileApi, getFileApi} = useFileManager()
 
   const getInsideFile = (e) => {
     const clickedFile = e.target.textContent;
     let path = `${currentPath}\\${clickedFile}`
-    console.log(backword)
+    // console.log(backword)
     getInsideFileApi(path)
   }
   
