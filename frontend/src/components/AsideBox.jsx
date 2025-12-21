@@ -1,8 +1,25 @@
 import React from "react";
 import { useState } from "react";
+import useFileContext from './../context/FileContext';
+import useFileManager from './../hooks/useFileManager';
+
+
 
 function AsideBox() {
   const [active, setActive] = useState("My Files");
+
+  const {homeDir} = useFileContext();
+  const {getInsideFileApi} = useFileManager()
+  // console.log(homeDir)
+
+  const getInsideSpecifiLocation = (current) => {
+    // console.log(active)
+    if(current == "Desktop" || current == "Music" || current == "Downloads") {
+      let path = `${homeDir}\\${current}`
+      console.log(path)
+      getInsideFileApi(path);
+    }
+  }
 
   return (
     <div className="w-full bg-[#212121] py-4 px-2 border-r-2 h-screen overflow-hidden sticky top-0 text-white">
@@ -69,7 +86,10 @@ function AsideBox() {
             className={`border-gray-400 cursor-pointer p-2 rounded hover:translate-x-1.5  transition-all duration-200 ${
               active == "Desktop" ? "bg-[#00796B]" : "hover:bg-gray-600/50"
             }`}
-            onClick={() => setActive("Desktop")}
+            onClick={() => {
+              setActive("Desktop")
+              getInsideSpecifiLocation("Desktop");
+            }}
           >
             🖥️ Desktop
           </li>
@@ -77,15 +97,21 @@ function AsideBox() {
             className={`border-gray-400 cursor-pointer p-2 rounded hover:translate-x-1.5 transition-all duration-200 ${
               active == "Download" ? "bg-[#00796B]" : "hover:bg-gray-600/50"
             }`}
-            onClick={() => setActive("Download")}
+            onClick={() => {
+              setActive("Download")
+              getInsideSpecifiLocation("Downloads");
+            }}
           >
-            ⬇️ Download
+            ⬇️ Downloads
           </li>
           <li
             className={`border-gray-400 cursor-pointer p-2 rounded hover:translate-x-1.5 transition-all duration-200 ${
               active == "Music" ? "bg-[#00796B]" : "hover:bg-gray-600/50"
             }`}
-            onClick={() => setActive("Music")}
+            onClick={() => {
+              setActive("Music")
+              getInsideSpecifiLocation("Music");
+            }}
           >
             🎵 Music
           </li>
