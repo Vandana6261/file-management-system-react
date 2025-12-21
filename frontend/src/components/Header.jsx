@@ -5,7 +5,7 @@ import useFileManager from '../hooks/useFileManager';
 import useFileContext from './../context/FileContext';
 
 function Header({setOpen, open}) {
-  const {backword, setBackword, currentPath, forward, setForward} = useFileContext()
+  const {homeDir, backword, setBackword, currentPath, forward, setForward} = useFileContext()
   const {getInsideFileApi, loadFiles} = useFileManager()
 
   const updateBackword = () => {
@@ -51,15 +51,15 @@ function Header({setOpen, open}) {
               <FaArrowRight />
             </span>
           </div>
-          <div className="path">
-            <p>Home AppData</p>
+          <div className="path cursor-pointer px-4 py-2 rounded bg-[#00796B] transition-all duration-200 hover:rotate-6 hover:scale-105" onClick={() => loadFiles()}>
+            <p>Go To Home</p>
           </div>
         </div>
 
         {/* right part of header */}
         <div className="top-right w-1/2 flex gap-4">
             <input
-            className="border-white bg-[##2D2D30] py-2 px-4 rounded-full outline-1 transition-all duration-200 focus:outline-white w-64 focus:-translate-x-1.5 focus:shadow-[0_0_10px_rgba(100, 100, 100, 0.8)"
+            className="border-white bg-[##2D2D30] py-2 px-4 rounded-full outline-1 transition-all duration-200 focus:outline-white w-64  focus:shadow-[0_0_10px_rgba(100, 100, 100, 0.8)"
             type="text" 
             placeholder="Search Files and Folders"
             />
