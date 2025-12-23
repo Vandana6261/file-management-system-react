@@ -64,7 +64,7 @@ function useFileManager() {
         const data = await response.json();
         if (Array.isArray(data.body)) {
           if(backword[backword.length - 1] == path) {
-            setBackword(prev => prev.slice(0, -1))
+            setBackword(prev => prev.slice(0, -1))  
           } else if(forward[forward.length - 1] == path) {
             setForward(prev => prev.slice(0, -1))
           }

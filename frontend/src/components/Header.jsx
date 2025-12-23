@@ -1,57 +1,101 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { FaArrowRight } from "react-icons/fa";
-import useFileManager from '../hooks/useFileManager';
-import useFileContext from './../context/FileContext';
+import useFileManager from "../hooks/useFileManager";
+import useFileContext from "./../context/FileContext";
 
-function Header({setOpen, open}) {
-  const {homeDir, backword, setBackword, currentPath, forward, setForward} = useFileContext()
-  const {getInsideFileApi, loadFiles} = useFileManager()
+function Header({ setOpen, open }) {
+  const { homeDir, backword, setBackword, currentPath, forward, setForward, darkTheme, setDarkTheme } =
+    useFileContext();
+  const { getInsideFileApi, loadFiles } = useFileManager();
 
   const updateBackword = () => {
-    console.log("backword", backword)
-    console.log("forward", forward)
-    
-    if(backword.length > 1 ) {
-      let lastVisitedPath = backword[backword.length-1]
-      setForward(prev => [...prev, currentPath])
-      getInsideFileApi(lastVisitedPath)
-    }  else {
-      if(backword.length > 0) loadFiles(backword[0])
+    console.log("backword", backword);
+    console.log("forward", forward);
+
+    if (backword.length > 1) {
+      let lastVisitedPath = backword[backword.length - 1];
+
+      let newArr = [...forward];
+      if (forward.length > 10) {
+        newArr.shift();
+      }
+      newArr.push(currentPath)
+      setForward(newArr)
+
+      // setForward((prev) => [...prev, currentPath]);
+      getInsideFileApi(lastVisitedPath);
+    } else {
+      if (backword.length > 0) loadFiles(backword[0]);
     }
-  }
+  };
 
   const updateForward = () => {
     // console.log("udateForward clicked")
     // console.log("backword", backword)
     // console.log("forward", forward)
-    if(forward.length > 0) {
-      // setForward(prev => prev.slice(0, -1))
-      let lastVisitedPath = forward[forward.length-1]
-      setBackword(prev => [...prev, lastVisitedPath])
-      getInsideFileApi(lastVisitedPath)
+    if (forward.length > 0) {
+      let lastVisitedPath = forward[forward.length - 1];
+      // if(backword[backword.length-1] !== lastVisitedPath) {
+        setBackword((prev) => [...prev, lastVisitedPath]);
+      // }
+      getInsideFileApi(lastVisitedPath);
     }
-  }
+  };
 
+  useEffect(() => {
+    let theme = localStorage.getItem("theme") || "dark"
+  //   // console.log(theme); 
+    if(theme == "dark") {
+      document.documentElement.classList.add("dark");
+      setDarkTheme(true);
+    } else {
+      document.documentElement.classList.remove("dark");
+      setDarkTheme(false);
+    }
+  }, [])
+
+  // document.documentElement.classList.add("dark");
+  const toggleTheme = () => {
+    if(darkTheme) {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+      console.log(darkTheme, "darkTheme")
+      setDarkTheme(false);
+    } else {
+      // console.log(darkTheme)
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark")
+      setDarkTheme(true);
+    }
+
+
+  }
+  
   // console.log(open)
   return (
     <>
-      <header className="flex justify-between items-center sticky top-0 bg-gray-800 z-20 w-full p-4 text-white border-b-2 border-[#00796B]">
+      <header className="flex justify-between items-center sticky top-0 bg-[#D2E1DA] dark:bg-gray-800 z-20 w-full p-4 dark:text-white border-b-2 border-[#00796B]">
         {/* left part of header */}
         <div className="top-left flex items-center gap-4 w-1/2 ">
           <div className="icons-div flex gap-2">
-            <span className="p-4 rounded bg-gray-600/50 transition-all duration-200 hover:scale-90"
-            onClick={updateBackword}
+            <span
+              className="p-4 rounded bg-gray-600/50 transition-all duration-200 hover:scale-90"
+              onClick={updateBackword}
             >
               <FaArrowLeft />
             </span>
-            <span className="p-4 rounded bg-gray-600/50 transition-all duration-200 hover:scale-90"
-            onClick={updateForward}
+            <span
+              className="p-4 rounded bg-gray-600/50 transition-all duration-200 hover:scale-90"
+              onClick={updateForward}
             >
               <FaArrowRight />
             </span>
           </div>
-          <div className="path cursor-pointer px-4 py-2 rounded bg-[#00796B] transition-all duration-200 hover:rotate-6 hover:scale-105" onClick={() => loadFiles()}>
+          <div
+            className="path cursor-pointer px-4 py-2 rounded bg-primary transition-all duration-200 hover:rotate-6 hover:scale-105"
+            onClick={() => loadFiles()}
+          >
             <p>Go To Home</p>
           </div>
         </div>
@@ -59,18 +103,21 @@ function Header({setOpen, open}) {
         {/* right part of header */}
         <div className="top-right w-1/2 flex gap-4">
             <input
-            className="border-white bg-[##2D2D30] py-2 px-4 rounded-full outline-1 transition-all duration-200 focus:outline-white w-64  focus:shadow-[0_0_10px_rgba(100, 100, 100, 0.8)"
+            className="border-white  py-2 px-4 rounded-full outline-1 transition-all duration-200 focus:outline-white w-64  focus:shadow-[0_0_10px_rgba(100, 100, 100, 0.8) dark:placeholder:text-gray-300 placeholder:text-black"
             type="text" 
             placeholder="Search Files and Folders"
-            />
-            <button className="bg-[#00796B] px-4 py-2 rounded transition-all duration-200 hover:rotate-6 hover:scale-105" onClick={() => setOpen(!open)}>Add File</button>
+          />
+          <button
+            className="bg-[#00796B] px-4 py-2 rounded transition-all duration-200 hover:rotate-6 hover:scale-105"
+            onClick={() => setOpen(!open)}
+          >
+            Add File
+          </button>
+          <button className=" bg-[#00796B] dark:bg-[#00796B] px-4 py-2 rounded " onClick={toggleTheme}>
+            Change Theme
+          </button>
         </div>
-      </header> 
-      {/* <div className="text-white">
-        <p>{backword} : backword</p>
-        <p>{forward} : forward</p>
-        <p>{currentPath} : currentPath</p>
-      </div> */}
+      </header>
     </>
   );
 }
