@@ -22,9 +22,9 @@ function AllFile() {
             return (
               <div
                 key={index}
-                className="file bg-[#32403e7e] dark:bg-[#4152507e] w-30 h-30 rounded flex flex-col justify-center items-center transition-all duration-200 hover:-translate-y-1.5 hover:scale-105  "
+                className="file bg-[#4678707e] dark:bg-[#4152507e] w-30 h-30 rounded flex flex-col justify-center items-center transition-all duration-200 hover:-translate-y-1.5 hover:scale-105  "
               >
-                <div>{item.icon}</div>
+                <div className="text-6xl">{item.icon}</div>
                 <p
                   className="mx-4 select-none truncate w-full text-center p-2 cursor-pointer"
                   onDoubleClick={(e) => getInsideFile(e)}

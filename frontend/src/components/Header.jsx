@@ -45,7 +45,6 @@ function Header({ setOpen, open }) {
 
   useEffect(() => {
     let theme = localStorage.getItem("theme") || "dark"
-  //   // console.log(theme); 
     if(theme == "dark") {
       document.documentElement.classList.add("dark");
       setDarkTheme(true);

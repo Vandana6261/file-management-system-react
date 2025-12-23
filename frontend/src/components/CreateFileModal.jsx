@@ -37,7 +37,8 @@ function CreateFileModal({open, setOpen}) {
 
               <div className={`flex-1/3 border-2 border-[#00796B] rounded-md p-2 text-xl transition-all duration-75 ease-linear hover:text-lg hover:scale-95 cursor-pointer ${type === "file" ? "bg-[#00796B]" : ""}`}  onClick={() => setType("file")}>File</div>
               <div className={`flex-1/3 border-2 border-[#00796B] rounded-md p-2 text-xl transition-all duration-75 ease-linear hover:text-lg hover:scale-95 cursor-pointer ${type === "folder" ? "bg-[#00796B]" : ""}`}  onClick={() => setType("folder")}>Folder</div>
-              <div className="flex-1/3 border-2 border-[#00796B] rounded-md p-2 text-xl transition-all duration-75 ease-linear hover:text-lg hover:scale-95 cursor-pointer" onClick={() => {
+              <div className="flex-1/3 border-2 border-[#00796B] rounded-md p-2 text-xl transition-all duration-75 ease-linear hover:text-lg hover:scale-95 cursor-pointer" 
+              onClick={() => {
                 setOpen(false)
                 setFileOrFolderName("")
               }}>Cancel</div>
