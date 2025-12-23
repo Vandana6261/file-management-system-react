@@ -4,6 +4,7 @@ import AsideBox from './components/AsideBox';
 import Header from './components/Header';
 import AllFile from './components/AllFile';
 import CreateFileModal from './components/CreateFileModal';
+import { useEffect } from 'react';
 
 
 function App() {
@@ -11,11 +12,11 @@ function App() {
 
   return (
     <>
-      <div className="flex bg-[#212121]">
+      <div className="flex bg-[#D2E1DA]  dark:bg-[#212121]">
           <div className="w-1/5 ">
             <AsideBox />
           </div>
-          <div className="w-4/5  ">
+          <div className="w-4/5 ">
               <Header open={open} setOpen={setOpen}/>
               <AllFile />
           </div>
