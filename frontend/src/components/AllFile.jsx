@@ -15,14 +15,14 @@ function AllFile() {
   
   return (
     <>
-      <div className="text-white w-full p-4 ">
+      <div className="text-black dark:text-white w-full p-4 ">
         <div className="files flex flex-wrap mt-4 gap-4 ">
           {/* <div>{backword}</div> */}
           {filesData && filesData.map((item, index) => {
             return (
               <div
                 key={index}
-                className="file bg-[#3E3E42] w-30 h-30 rounded flex flex-col justify-center items-center transition-all duration-200 hover:-translate-y-1.5 hover:scale-105  "
+                className="file bg-[#32403e7e] dark:bg-[#4152507e] w-30 h-30 rounded flex flex-col justify-center items-center transition-all duration-200 hover:-translate-y-1.5 hover:scale-105  "
               >
                 <div>{item.icon}</div>
                 <p
