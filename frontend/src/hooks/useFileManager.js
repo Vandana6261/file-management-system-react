@@ -27,23 +27,22 @@ function useFileManager() {
     loadFiles();
   }, []);
 
-  const getInsideFileApi = async (path) => {
+  const getInsideFileApi = async (path, clickedFileorFolder = "") => {
     try {
-      console.log("getInsideFile Api called")
-      console.log(path)
+      // console.log("getInsideFile Api called")
+      // console.log(path)
       const response = await fetch("http://localhost:3000", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ filePath: path }),
+        body: JSON.stringify({ filePath: path, clickedFileorFolder }),
       });
       if (!response.ok) {
         setMessage("error");
         return;
       } else {
         const data = await response.json();
-        setMessage(data);
         await getFileApi(path);
       }
     } catch (error) {
@@ -53,7 +52,7 @@ function useFileManager() {
 
   const getFileApi = async (path) => {
     try {
-      console.log("get api called")
+      // console.log("get api called")
       const response = await fetch("http://localhost:3000");
       if (!response.ok)
       {
@@ -119,6 +118,28 @@ function useFileManager() {
       console.log("Error in catch block in creatFileOrFolderAPi : ", error)
     }
   }
+
+  
+  const getRecentFileDataApi = async(path) => {
+    try {
+      const response = await fetch("http://localhost:3000/recent", {
+        method: "GET",
+        headers: {
+          "filePath": path
+        }
+      })
+      if(!response.ok) {
+        console.log("Error : ", response.status);
+      } else {
+        const data = await response.json();
+        console.log(data)
+        return data;
+      }
+    } catch (error) 
+    {
+      console.log("Error in catch block in getRecentFileApi : ", error)
+    }
+  }
   
 
   return {
@@ -126,7 +147,7 @@ function useFileManager() {
     getInsideFileApi,
     getFileApi,
     createFileOrFolderApi,
-
+    getRecentFileDataApi,
   }
 }
 

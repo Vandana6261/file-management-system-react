@@ -31,7 +31,7 @@ function RecentFile({showRecent, setShowRecent}) {
     <>
       <div className=' bg-amber-700 h-full w-full cursor-pointer' onClick={callApi}>
             hello
-            {console.log(data)}
+            {/* {console.log(data)} */}
             {
               data && data.length > 0 && data.map((each, index) => (
                 <div>
