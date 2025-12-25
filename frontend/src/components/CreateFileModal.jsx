@@ -25,20 +25,19 @@ function CreateFileModal({open, setOpen}) {
     <>
       <div className={`modal h-screen w-screen fixed flex justify-center items-center top-0 backdrop-blur-sm text-white z-30 ${open ? "flex" : "hidden"}`} >
 
-        <div className="absolute left-[70%] top-[30%] bg-[#038b7b67] p-2 rounded-full h-8 w-8 flex justify-center items-center cursor-pointer" onClick={() => setOpen(false)}>X</div>
+        <div className="absolute left-[70%] top-[30%] bg-[#038b7b67] p-2 rounded-full h-8 w-8 flex justify-center items-center cursor-pointer text-black dark:text-white" onClick={() => setOpen(false)}>X</div>
 
-        <div className="modal-content border-2 border-gray-300/30 h-60 w-72 rounded-md p-4">
+        <div className="modal-content border-2 bg-[#4678707e] text-black border-[#038b7b67] dark:bg-[#2a574dc9] dark:text-white dark:border-gray-300/50 h-60 w-72 rounded-md p-4">
 
           <form action="#" className="flex flex-col items-center gap-4">
             
             <input type="text" placeholder="Enter file name" name="inputName" value={fileOrFolderName} onChange={(e) => setFileOrFolderName(e.target.value)} required  className="p-2 outline-1 outline-gray-300/30 rounded-md w-full" />
 
-            <div className="btn" className="flex flex-wrap gap-2">
+            <div className="btn flex flex-wrap gap-2">
 
               <div className={`flex-1/3 border-2 border-[#00796B] rounded-md p-2 text-xl transition-all duration-75 ease-linear hover:text-lg hover:scale-95 cursor-pointer ${type === "file" ? "bg-[#00796B]" : ""}`}  onClick={() => setType("file")}>File</div>
               <div className={`flex-1/3 border-2 border-[#00796B] rounded-md p-2 text-xl transition-all duration-75 ease-linear hover:text-lg hover:scale-95 cursor-pointer ${type === "folder" ? "bg-[#00796B]" : ""}`}  onClick={() => setType("folder")}>Folder</div>
-              <div className="flex-1/3 border-2 border-[#00796B] rounded-md p-2 text-xl transition-all duration-75 ease-linear hover:text-lg hover:scale-95 cursor-pointer" 
-              onClick={() => {
+              <div className="flex-1/3 border-2 border-[#00796B] rounded-md p-2 text-xl transition-all duration-75 ease-linear hover:text-lg hover:scale-95 cursor-pointer" onClick={() => {
                 setOpen(false)
                 setFileOrFolderName("")
               }}>Cancel</div>

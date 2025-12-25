@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { FaArrowRight } from "react-icons/fa";
 import useFileManager from "../hooks/useFileManager";
-import useFileContext from "./../context/FileContext";
+import useFileContext from "../context/FileContext";
 
 function Header({ setOpen, open }) {
   const { homeDir, backword, setBackword, currentPath, forward, setForward, darkTheme, setDarkTheme } =
@@ -74,7 +74,7 @@ function Header({ setOpen, open }) {
   // console.log(open)
   return (
     <>
-      <header className="flex justify-between items-center sticky top-0 bg-[#D2E1DA] dark:bg-gray-800 z-20 w-full p-4 dark:text-white border-b-2 border-[#00796B]">
+      <header className="flex justify-between items-center sticky top-0 bg-main-light dark:bg-header-dark z-20 w-full p-4 dark:text-white border-b-2 border-primary ">
         {/* left part of header */}
         <div className="top-left flex items-center gap-4 w-1/2 ">
           <div className="icons-div flex gap-2">
@@ -107,12 +107,12 @@ function Header({ setOpen, open }) {
             placeholder="Search Files and Folders"
           />
           <button
-            className="bg-[#00796B] px-4 py-2 rounded transition-all duration-200 hover:rotate-6 hover:scale-105"
+            className="bg-primary px-4 py-2 rounded transition-all duration-200 hover:rotate-6 hover:scale-105"
             onClick={() => setOpen(!open)}
           >
             Add File
           </button>
-          <button className=" bg-[#00796B] dark:bg-[#00796B] px-4 py-2 rounded " onClick={toggleTheme}>
+          <button className=" bg-primary px-4 py-2 rounded " onClick={toggleTheme}>
             Change Theme
           </button>
         </div>
