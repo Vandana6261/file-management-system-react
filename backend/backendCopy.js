@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 const icons = require("./icons.json")
-const { exec } = require("child_process")
+const { exec, spawn } = require("child_process")
 
 const app = express();
 
@@ -10,8 +10,8 @@ const app = express();
 app.use(
   cors({
     origin: "*",
-    methods: ["GET", "POST"],
-    allowedHeaders: ["Content-Type"],
+    methods: ["GET", "POST", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "filePath"],
   })
 );
 app.use(express.json());
@@ -21,15 +21,15 @@ let pwd = home;
 const fs = require("fs");
 
 const platformCommands = [
-  { platform: "aix", cmd: "xdg-open" },
-  { platform: "darwin", cmd: "open" },
-  { platform: "freebsd", cmd: "xdg-open" },
-  { platform: "linux", cmd: "xdg-open" },
-  { platform: "openbsd", cmd: "xdg-open" },
-  { platform: "sunos", cmd: "xdg-open" },
-  { platform: "win32", cmd: "start" },
-  { platform: "android", cmd: "am start" },
-  { platform: "ios", cmd: "open" }
+  { platform: "aix",     cmd: "sh",       startCmd: "xdg-open" },
+  { platform: "darwin",  cmd: "open",     startCmd: "open" },
+  { platform: "freebsd", cmd: "sh",       startCmd: "xdg-open" },
+  { platform: "linux",   cmd: "sh",       startCmd: "xdg-open" },
+  { platform: "openbsd", cmd: "sh",       startCmd: "xdg-open" },
+  { platform: "sunos",   cmd: "sh",       startCmd: "xdg-open" },
+  { platform: "win32",   cmd: "cmd",      startCmd: "start" },
+  { platform: "android", cmd: "sh",       startCmd: "am start" },
+  { platform: "ios",     cmd: "open",     startCmd: "open" }
 ];
 
 
@@ -57,11 +57,14 @@ app.get("/home", (req, res) =>
 
 
 let file;
+let clickedFileorFolder;
 // call from the getInsideFileApi function
 app.post("", (req, res) => 
 {
   file = req.body.filePath;
   console.log("Post Called with path ", file)
+  clickedFileorFolder = req.body.clickedFileorFolder;
+  console.log(clickedFileorFolder);
   pwd = path.normalize(req.body.filePath);
   console.log("response send")
   res.json({
@@ -94,10 +97,30 @@ app.get("", (req, res) => {
     {
       // open file
       fileOpener(pwd);
+      // console.log(pwd)
     }
-  
-
 });
+
+app.get("/recent", (req, res) => {
+  console.log("Recent called")
+  let filePath = req.headers["filepath"];
+  // console.log(filePath);
+  let fileName = path.basename(filePath)
+  let fileData = getIcon("files", fileName);
+  if(!fileData) {
+    res.json({
+      message: "Something happen in backend code "
+    })
+  }
+  res.json({
+    body: {
+      fileData,
+      filePath
+    },
+    message: "Success"
+  })
+
+})
 
 // to create a file or folder
 app.post("/create", (req, res) => {
@@ -166,6 +189,7 @@ function getFilesWithIcons(path, filesOrFoldersArr)
   let filesWithIcon = []
   filesWithIcon =  filesOrFoldersArr.map((eachItem) => 
   {
+    // console.log("eachItem", eachItem)
     let itemType;
     let iconKey = "icon";
 
@@ -196,6 +220,23 @@ function getFilesWithIcons(path, filesOrFoldersArr)
   return filesWithIcon;
 }
 
+// this is for get Files or Folders icon directly
+function getIcon(type, fileFolderName ) {
+  let iconKey = "icon";
+  if(type == "folders") {
+    // i will do these later
+
+  } else {
+    let index = fileFolderName.lastIndexOf(".");
+    let ext = fileFolderName.slice(index + 1);
+    return {
+      name: fileFolderName,
+      type,
+      icon: icons[type][ext] ? icons[type][ext][iconKey] : icons[itemType]["default"][iconKey]
+    }
+  }
+}
+ 
 function readDirectory(pwd) 
 {
   console.log("readDirectory called")
@@ -219,21 +260,18 @@ function fileOpener(path)
 {
   let osType = process.platform;
   let osInfo = platformCommands.find((eachOsInfo) => eachOsInfo.platform == osType)
-  let osCommand = osInfo.cmd;   // -> start
-  let command = `${osCommand} "" "${path}"`
+  path = path.normalize()
+  let cmd = osInfo.cmd;
+  let startCmd = osInfo.startCmd;
+  let command = ["/c", startCmd, "", path]
 
-  exec(command, (error, stdout, stderr) => 
-  {
-    if(error) 
-    {
-      console.log("Error: ", error);
-      return;
-    }
-    if(stderr) 
-    {
-      console.log("Stderr", stderr);
-    }
+  const child = spawn(cmd, command, {
+    detached: true,
+    stdio: "ignore"
   })
+  child.unref();  
+
+  
 }
 
 
