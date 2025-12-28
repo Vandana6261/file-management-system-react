@@ -61,10 +61,6 @@ let clickedFileorFolder;
 // call from the getInsideFileApi function
 app.post("", (req, res) => 
 {
-  file = req.body.filePath;
-  console.log("Post Called with path ", file)
-  clickedFileorFolder = req.body.clickedFileorFolder;
-  console.log(clickedFileorFolder);
   pwd = path.normalize(req.body.filePath);
   console.log("response send")
   res.json({
@@ -101,25 +97,25 @@ app.get("", (req, res) => {
     }
 });
 
-app.get("/recent", (req, res) => {
+app.post("/recent", (req, res) => {
   console.log("Recent called")
-  let filePath = req.headers["filepath"];
-  // console.log(filePath);
-  let fileName = path.basename(filePath)
-  let fileData = getIcon("files", fileName);
-  if(!fileData) {
-    res.json({
-      message: "Something happen in backend code "
-    })
-  }
-  res.json({
-    body: {
-      fileData,
-      filePath
-    },
-    message: "Success"
+  let filePath = req.body.pathArr;
+  let pathIconArray = filePath.map(eachPath => {
+    let fileName = path.basename(eachPath);
+    let fileData = getIcon("files", fileName);
+    if(!fileData) {
+      res.json({
+        message: "Something happen inside this recent api call"
+      })
+    } else {
+      fileData.path = path.normalize(eachPath);
+      return fileData;
+    }
   })
-
+  res.json({
+    message: "Success",
+    pathIconArray
+  })
 })
 
 // to create a file or folder
@@ -184,7 +180,7 @@ function isDirectory(way, file) {
 }
 
 
-function getFilesWithIcons(path, filesOrFoldersArr) 
+function getFilesWithIcons(pwd, filesOrFoldersArr) 
 {
   let filesWithIcon = []
   filesWithIcon =  filesOrFoldersArr.map((eachItem) => 
@@ -193,7 +189,7 @@ function getFilesWithIcons(path, filesOrFoldersArr)
     let itemType;
     let iconKey = "icon";
 
-    if(isDirectory(path, eachItem))
+    if(isDirectory(pwd, eachItem))
     {
       itemType = "folders"
       let item = eachItem.toLowerCase();
@@ -229,12 +225,14 @@ function getIcon(type, fileFolderName ) {
   } else {
     let index = fileFolderName.lastIndexOf(".");
     let ext = fileFolderName.slice(index + 1);
+    // console.log(icons[type][ext] ? icons[type][ext][iconKey] : icons[itemType]["default"][iconKey])
     return {
       name: fileFolderName,
       type,
-      icon: icons[type][ext] ? icons[type][ext][iconKey] : icons[itemType]["default"][iconKey]
+      icon: icons[type][ext] ? icons[type][ext][iconKey] : icons[type]["default"][iconKey]
     }
   }
+  console.log("Some error inside getIcon");
 }
  
 function readDirectory(pwd) 
