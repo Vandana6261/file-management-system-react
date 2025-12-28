@@ -104,9 +104,11 @@ function AsideBox( { showRecent, setShowRecent} ) {
             }`}
             onClick={() => setActive("Recent")}
           >
-              <div className="flex justify-between">
+              <div className="flex justify-between"
+                onClick={() => setShowRecent(!showRecent)}
+              >
                 <p>🕘 Recent</p>
-                <p onClick={() => setShowRecent(!showRecent)}>˅</p>
+                <p  className={`${showRecent ? "rotate-180" : ""}`}>˅</p>
               </div>
               {/* <div className="z-100 w-[70vw] fixed">
                 {showRecent && 
