@@ -108,8 +108,8 @@ function AsideBox( { showRecent, setShowRecent} ) {
                 <p>🕘 Recent</p>
                 <p onClick={() => setShowRecent(!showRecent)}>˅</p>
               </div>
-              {/* <div>
-                if(showRecent) {
+              {/* <div className="z-100 w-[70vw] fixed">
+                {showRecent && 
                 <RecentFile showRecent={showRecent} setShowRecent={setShowRecent}/>
                 }
               </div> */}
