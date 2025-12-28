@@ -11,23 +11,17 @@ function AllFile() {
     let path = `${currentPath}\\${clickedFile}`
 
     if(clickedFile.includes(".")) {
-      let tempArr = JSON.parse(localStorage.getItem("recent")) || []
-      tempArr = [...tempArr, path]
-      if(tempArr.length > 10) tempArr.shift();
+      let recentTempArr = JSON.parse(localStorage.getItem("recent")) || []
+      if(!recentTempArr.includes(path)) {
+        recentTempArr = [...recentTempArr, path];
+      }
+      if(recentTempArr.length > 10) recentTempArr.shift();
 
-      localStorage.setItem("recent", JSON.stringify(tempArr));
-      setRecentFile(tempArr);
+      localStorage.setItem("recent", JSON.stringify(recentTempArr));
     }
     // console.log(backword)
-    getInsideFileApi(path, clickedFile)
+    getInsideFileApi(path)
   }
-
-  useEffect(() => {
-    let list = JSON.stringify(localStorage.getItem("recent")) || [];
-    setRecentFile(list);
-    // console.log(list)
-    // console.log(recentFile)
-  }, [])
   
   return (
     <>
@@ -38,12 +32,13 @@ function AllFile() {
             return (
               <div
                 key={index}
-                className="file bg-card-light dark:bg-card-dark w-30 h-30 rounded flex flex-col justify-center items-center transition-all duration-200 hover:-translate-y-1.5 hover:scale-105  "
+                className="file bg-card-light dark:bg-card-dark w-30 h-30 rounded cursor-pointer flex flex-col justify-center items-center transition-all duration-200 hover:-translate-y-1.5 hover:scale-105  "
+                onDoubleClick={(e) => getInsideFile(e)}
               >
                 <div className="text-6xl">{item.icon}</div>
                 <p
-                  className="mx-4 select-none truncate w-full text-center p-2 cursor-pointer"
-                  onDoubleClick={(e) => getInsideFile(e)}
+                  className="mx-4 select-none truncate w-full text-center p-2 "
+                  
                 >
                   {item.name}
                 </p>
