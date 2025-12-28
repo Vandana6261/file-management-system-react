@@ -10,6 +10,7 @@ function useFileManager() {
       const response = await fetch("http://localhost:3000/home");
       if (!response) {
         console.log("Internal Server Error");
+        console.log("Error response is not ok: ", response.status);
       } else {
         const data = await response.json();
         setFilesData(data.body)
@@ -27,7 +28,7 @@ function useFileManager() {
     loadFiles();
   }, []);
 
-  const getInsideFileApi = async (path, clickedFileorFolder = "") => {
+  const getInsideFileApi = async (path) => {
     try {
       // console.log("getInsideFile Api called")
       // console.log(path)
@@ -36,10 +37,10 @@ function useFileManager() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ filePath: path, clickedFileorFolder }),
+        body: JSON.stringify({ filePath: path }),
       });
       if (!response.ok) {
-        setMessage("error");
+        console.log("Error response is not ok: ", response.status);
         return;
       } else {
         const data = await response.json();
@@ -56,7 +57,7 @@ function useFileManager() {
       const response = await fetch("http://localhost:3000");
       if (!response.ok)
       {
-        setMessage("error");
+        console.log("Error response is not ok: ", response.status);
       } 
       else
         {
@@ -75,7 +76,7 @@ function useFileManager() {
           
         }
         else {
-          setMessage(data.message);
+          console.log("response not include array or you use the wrong name")
         }
       }
     }
@@ -101,14 +102,12 @@ function useFileManager() {
         })
       });
       if(!response.ok) {
-        setMessage("error")
-        console.log("Response is not ok while creating a file or folder");
+        console.log("Error response is not ok: ", response.status);
       }
       else 
       {
         const data = await response.json();
         console.log("data received")
-        setMessage(data);
         console.log("getFileApi calling")
         await getFileApi(path);
       }
@@ -120,20 +119,23 @@ function useFileManager() {
   }
 
   
-  const getRecentFileDataApi = async(path) => {
+  const getRecentFileDataApi = async(pathArr) => {
     try {
       const response = await fetch("http://localhost:3000/recent", {
-        method: "GET",
+        method: "POST",
         headers: {
-          "filePath": path
-        }
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          pathArr,
+        })
       })
       if(!response.ok) {
-        console.log("Error : ", response.status);
+        console.log("Error response is not ok: ", response.status);
       } else {
         const data = await response.json();
         console.log(data)
-        return data;
+        return data.pathIconArray;
       }
     } catch (error) 
     {
