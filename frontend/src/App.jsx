@@ -10,7 +10,7 @@ import RecentFile from './components/RecentFile';
 
 function App() {
   const [open, setOpen] = useState(false);
-  const [showRecent, setShowRecent] = useState(true);
+  const [showRecent, setShowRecent] = useState(false);
   console.log(showRecent)
   return (
     <>
@@ -18,14 +18,12 @@ function App() {
           <div className="w-1/5 ">
             <AsideBox showRecent={showRecent} setShowRecent={setShowRecent}/>
           </div>
-          <div className="w-4/5 ">
+          <div className="w-4/5">
               <Header open={open} setOpen={setOpen}/>
-              <AllFile />
+              {showRecent ? <RecentFile /> : <AllFile />}
           </div>
       </div>
       <CreateFileModal open={open} setOpen={setOpen}/>
-      {/* {showRecent ? <RecentFile /> : ""} */}
-      <RecentFile showRecent={showRecent} setShowRecent={showRecent}/>
     </>
   )
 }
