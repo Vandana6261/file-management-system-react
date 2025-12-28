@@ -1,11 +1,11 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #00796b;
+  --color-primary: #00716b;
   --color-secondary: #27dcc7bc;
   /* --color-ternary: */
-  --color-hoverColor: #A4AAB2;
-
+  --color-hoverColor: #68717efd;
+/* c4e4d4 bce6d2 D2E1DA */
     --color-main-dark: #212121;
     --color-text-dark: white;
     --color-card-dark: #4152507e;
@@ -13,11 +13,14 @@
     --color-outline-dark: #ffffff
 
   
-    --color-main-light: #D2E1DA;
+    --color-main-light: #c4e4d4;
     --color-text-light: #000000;
     --color-card-light: #4678707e;
+    --color-card-select: #67b48f;
+    --color-header-light: #dcebe3;
     --color-bg2-light: #1e2939;
     --color-outline-light: #000000;
+    --color-card-select: #98c4bf7e
 
   }
 
