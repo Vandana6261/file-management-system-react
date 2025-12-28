@@ -37,7 +37,7 @@ function Header({ setOpen, open }) {
     if (forward.length > 0) {
       let lastVisitedPath = forward[forward.length - 1];
       // if(backword[backword.length-1] !== lastVisitedPath) {
-        setBackword((prev) => [...prev, lastVisitedPath]);
+      setBackword((prev) => [...prev, lastVisitedPath]);
       // }
       getInsideFileApi(lastVisitedPath);
     }
@@ -45,7 +45,7 @@ function Header({ setOpen, open }) {
 
   useEffect(() => {
     let theme = localStorage.getItem("theme") || "dark"
-    if(theme == "dark") {
+    if (theme == "dark") {
       document.documentElement.classList.add("dark");
       setDarkTheme(true);
     } else {
@@ -56,7 +56,7 @@ function Header({ setOpen, open }) {
 
   // document.documentElement.classList.add("dark");
   const toggleTheme = () => {
-    if(darkTheme) {
+    if (darkTheme) {
       document.documentElement.classList.remove("dark");
       localStorage.setItem("theme", "light");
       console.log(darkTheme, "darkTheme")
@@ -70,52 +70,60 @@ function Header({ setOpen, open }) {
 
 
   }
-  
+
   // console.log(open)
   return (
     <>
-      <header className="flex justify-between items-center sticky top-0 bg-main-light dark:bg-header-dark z-20 w-full p-4 dark:text-white border-b-2 border-primary ">
+      <header className="sticky top-0 bg-header-light dark:bg-header-dark z-20 w-full p-4 dark:text-white border-b-2 border-primary ">
         {/* left part of header */}
-        <div className="top-left flex items-center gap-4 w-1/2 ">
-          <div className="icons-div flex gap-2">
-            <span
-              className="p-4 rounded bg-gray-600/50 transition-all duration-200 hover:scale-90"
-              onClick={updateBackword}
-            >
-              <FaArrowLeft />
-            </span>
-            <span
-              className="p-4 rounded bg-gray-600/50 transition-all duration-200 hover:scale-90"
-              onClick={updateForward}
-            >
-              <FaArrowRight />
-            </span>
+        <div className="flex justify-between items-center ">
+
+          <div className="top-left flex items-center gap-4 flex-1">
+              <div className="icons-div flex gap-2">
+                <span
+                  className="p-4 rounded bg-gray-600/50 transition-all duration-200 hover:scale-90"
+                  onClick={updateBackword}
+                >
+                  <FaArrowLeft />
+                </span>
+                <span
+                  className="p-4 rounded bg-gray-600/50 transition-all duration-200 hover:scale-90"
+                  onClick={updateForward}
+                >
+                  <FaArrowRight />
+                </span>
+              </div>
+              <div
+                className="path cursor-pointer px-4 py-2 rounded bg-primary transition-all duration-200 hover:rotate-6 hover:scale-105"
+                onClick={() => loadFiles()}
+              >
+                <p>Go To Home</p>
+              </div>
+          
           </div>
-          <div
-            className="path cursor-pointer px-4 py-2 rounded bg-primary transition-all duration-200 hover:rotate-6 hover:scale-105"
-            onClick={() => loadFiles()}
-          >
-            <p>Go To Home</p>
+          {/* right part of header */}
+          <div className="top-right flex-1 flex gap-4">
+            <input
+              className="border-white  py-2 px-4 rounded-full outline-1 transition-all duration-200 dark:focus:outline-white w-64  focus:shadow-[0_0_10px_rgba(100, 100, 100, 0.8) dark:placeholder:text-gray-300 placeholder:text-black"
+              type="text"
+              placeholder="Search Files and Folders"
+            />
+            <button
+              className="bg-primary px-4 py-2 rounded transition-all duration-200 hover:rotate-6 hover:scale-105"
+              onClick={() => setOpen(!open)}
+            >
+              Add File
+            </button>
+            <button className=" bg-primary px-4 py-2 rounded " onClick={toggleTheme}>
+              {darkTheme ? "Light" : "Dark"}
+            </button>
           </div>
         </div>
 
-        {/* right part of header */}
-        <div className="top-right w-1/2 flex gap-4">
-            <input
-            className="border-white  py-2 px-4 rounded-full outline-1 transition-all duration-200 focus:outline-white w-64  focus:shadow-[0_0_10px_rgba(100, 100, 100, 0.8) dark:placeholder:text-gray-300 placeholder:text-black"
-            type="text" 
-            placeholder="Search Files and Folders"
-          />
-          <button
-            className="bg-primary px-4 py-2 rounded transition-all duration-200 hover:rotate-6 hover:scale-105"
-            onClick={() => setOpen(!open)}
-          >
-            Add File
-          </button>
-          <button className=" bg-primary px-4 py-2 rounded " onClick={toggleTheme}>
-            Change Theme
-          </button>
+        <div className="mt-2">
+          {currentPath}
         </div>
+
       </header>
     </>
   );
