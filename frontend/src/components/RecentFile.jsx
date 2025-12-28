@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react'
 import useFileContext, { FileContext } from '../context/FileContext'
 import useFileManager from '../hooks/useFileManager';
 
-function RecentFile({ showRecent, setShowRecent }) {
-  const { getRecentFileDataApi } = useFileManager()
+function RecentFile() {
+  const { getRecentFileDataApi, getInsideFileApi } = useFileManager()
   const { recentFile, setRecentFile } = useFileContext()
   const [recentArr, setRecentArr] = useState([])
   const [data, setData] = useState([])
@@ -24,18 +24,21 @@ function RecentFile({ showRecent, setShowRecent }) {
       setData(response)
     }
   }
+
   return (
     <>
-      <div className=' bg-amber-700 max-h-[50vh] w-[70vw] rounded-xl p-4 cursor-pointer overflow-auto'>
+      <div className=' bg-mail-light w-full rounded-xl p-4 cursor-pointer'>
         {/* {console.log(data)} */}
         {
           data && data.length > 0 && data.map((each, index) => (
-            <div key={index} className=' bg-red-500 p-1 '>
-              <div className='flex justify-between items-center shadow-[0_0_10px_rgba(0,0,0,0.5) border-2 rounded'>
-               <div className='w-fit'>
+            <div key={index} className='p-2' 
+              onClick={() => getInsideFileApi(each.path)}
+            >
+              <div className='flex justify-between items-center bg-card-light shadow-md rounded'>
+               <div className='w-fit bg-'>
                  <p className='text-4xl'>{each.icon}</p>
                </div>
-                <div className='text-xl p-1 bg-blue-500 w-full '>
+                <div className='text-md  p-1 bg-header-light w-full '>
                   <p>{each.name}</p>
                 <p>{each.path}</p>
                 </div>
