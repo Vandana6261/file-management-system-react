@@ -26,11 +26,11 @@ function AsideBox( { showRecent, setShowRecent} ) {
   };
 
   return (
-    <div className="w-full  bg-main-light dark:bg-main-dark py-4 px-2 border-r-2 border-primary h-screen overflow-hidden sticky top-0 text-text-light dark:text-text-dark">
+    <div className="w-full max-h-full bg-main-light dark:bg-main-dark py-4 px-2 border-r-2 border-primary h-screen overflow-hidden sticky top-0 text-text-light dark:text-text-dark">
       <div>
         <h2 className="font-bold text-2xl text-center">File Manager</h2>
         <h2
-          className={` cursor-pointer rounded p-2 mt-4 hover:translate-x-1.5 transition-all duration-200 bg-primary `}
+          className={` cursor-pointer rounded p-2 mt-4 hover:translate-x-1.5 text-white transition-all duration-200 bg-primary `}
         >
           Dashboard
         </h2>

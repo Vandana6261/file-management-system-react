@@ -94,7 +94,7 @@ function Header({ setOpen, open }) {
                 </span>
               </div>
               <div
-                className="path cursor-pointer px-4 py-2 rounded bg-primary transition-all duration-200 hover:rotate-6 hover:scale-105"
+                className="path cursor-pointer px-4 py-2 rounded bg-primary transition-all duration-200 hover:rotate-6 hover:scale-105 text-white"
                 onClick={() => loadFiles()}
               >
                 <p>Go To Home</p>
@@ -109,18 +109,18 @@ function Header({ setOpen, open }) {
               placeholder="Search Files and Folders"
             />
             <button
-              className="bg-primary px-4 py-2 rounded transition-all duration-200 hover:rotate-6 hover:scale-105"
+              className="bg-primary px-4 py-2 rounded transition-all duration-200 hover:rotate-6 hover:scale-105 text-white"
               onClick={() => setOpen(!open)}
             >
               Add File
             </button>
-            <button className=" bg-primary px-4 py-2 rounded " onClick={toggleTheme}>
+            <button className=" bg-primary px-4 py-2 rounded text-white" onClick={toggleTheme}>
               {darkTheme ? "Light" : "Dark"}
             </button>
           </div>
         </div>
 
-        <div className="mt-2">
+        <div className="mt-2 ">
           {currentPath}
         </div>
 

@@ -23,11 +23,11 @@ function CreateFileModal({open, setOpen}) {
 
   return (
     <>
-      <div className={`modal h-screen w-screen fixed flex justify-center items-center top-0 backdrop-blur-sm text-white z-30 ${open ? "flex" : "hidden"}`} >
+      <div className={`modal h-screen w-screen fixed flex justify-center items-center top-0 backdrop-blur-sm  text-white z-30 ${open ? "flex" : "hidden"}`} >
 
-        <div className="absolute left-[70%] top-[30%] bg-[#038b7b67] p-2 rounded-full h-8 w-8 flex justify-center items-center cursor-pointer text-black dark:text-white" onClick={() => setOpen(false)}>X</div>
+        <button className="absolute left-[70%] top-[30%] bg-[#038b7b67] p-2 rounded-full h-8 w-8 flex justify-center items-center cursor-pointer text-black dark:text-white" onClick={() => setOpen(false)}>X</button>
 
-        <div className="modal-content border-2 bg-[#4678707e] text-black border-[#038b7b67] dark:bg-[#2a574dc9] dark:text-white dark:border-gray-300/50 h-60 w-72 rounded-md p-4">
+        <div className="modal-content border-2 bg-[#467870a6] text-black border-[#038b7b67] dark:bg-[#2a574dc9] dark:text-white dark:border-gray-300/50 h-60 w-72 rounded-md p-4">
 
           <form action="#" className="flex flex-col items-center gap-4">
             
