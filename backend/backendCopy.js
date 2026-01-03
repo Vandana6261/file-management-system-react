@@ -1,11 +1,10 @@
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
-const icons = require("./icons.json")
-const { exec, spawn } = require("child_process")
+const icons = require("./icons.json");
+const { exec, spawn } = require("child_process");
 
 const app = express();
-
 
 app.use(
   cors({
@@ -20,7 +19,6 @@ const home = require("os").homedir();
 let pwd = home;
 const fs = require("fs");
 
-
 // this is check what frontend is requesting
 app.use((req, res, next) => {
   console.log("REQUEST: ", req.method, req.url);
@@ -28,12 +26,11 @@ app.use((req, res, next) => {
 });
 
 // first time call
-app.get("/home", (req, res) => 
-{
+app.get("/home", (req, res) => {
   fs.readdir(home, (err, fileNames) => {
     if (err) return res.status(500).json({ error: err.message });
     let filteredFile = filterDot(fileNames);
-    let filesWithIcon = getFilesWithIcons(home, filteredFile)
+    let filesWithIcon = getFilesWithIcons(home, filteredFile);
     res.json({
       filteredFile: filteredFile,
       body: filesWithIcon,
@@ -42,15 +39,12 @@ app.get("/home", (req, res) =>
   });
 });
 
-
-
 let file;
 let clickedFileorFolder;
 // call from the getInsideFileApi function
-app.post("", (req, res) => 
-{
+app.post("", (req, res) => {
   pwd = path.normalize(req.body.filePath);
-  console.log("response send")
+  console.log("response send");
   res.json({
     message: "Success",
     data: req.body,
@@ -60,87 +54,75 @@ app.post("", (req, res) =>
 // call from getFile function
 app.get("", (req, res) => {
   // console.log("Get is called with path ", pwd)
-  if(fs.statSync(pwd).isDirectory()) 
-    {
-      // send the data inside this dir
-      readDirectory(pwd)
+  if (fs.statSync(pwd).isDirectory()) {
+    // send the data inside this dir
+    readDirectory(pwd)
       .then((response) => {
         res.json({
           body: response,
           message: "File send",
-        })
-      }).catch((error) => {
-        console.log(error.message)
-        res.json({
-          messsage: "System has no permission to open this file of folder"
-        })
+        });
       })
-      
-    }
-    else 
-    {
-      // open file
-      fileOpener(pwd);
-      // console.log(pwd)
-    }
+      .catch((error) => {
+        console.log(error.message);
+        res.json({
+          messsage: "System has no permission to open this file of folder",
+        });
+      });
+  } else {
+    // open file
+    fileOpener(pwd);
+    // console.log(pwd)
+  }
 });
 
 app.post("/recent", (req, res) => {
-  console.log("Recent called")
+  console.log("Recent called");
   let filePath = req.body.pathArr;
-  let pathIconArray = filePath.map(eachPath => {
+  let pathIconArray = filePath.map((eachPath) => {
     let fileName = path.basename(eachPath);
     let fileData = getIcon("files", fileName);
-    if(!fileData) {
+    if (!fileData) {
       res.json({
-        message: "Something happen inside this recent api call"
-      })
+        message: "Something happen inside this recent api call",
+      });
     } else {
       fileData.path = path.normalize(eachPath);
       return fileData;
     }
-  })
+  });
   res.json({
     message: "Success",
-    pathIconArray
-  })
-})
+    pathIconArray,
+  });
+});
 
 // to create a file or folder
 app.post("/create", (req, res) => {
-  let fileName = req.body.fileOrFolderName;
-  let fileType = req.body.type;
-  let currentPath = req.body.path;
-  
-  destination = path.join(currentPath, fileName)
-  console.log(fileType)
-  if(fileType == "file") 
-  {
-    fs.writeFile(destination, "", (err) => {
-      if(err) console.log("Error while creating file : ", err);
-      // console.log("File created");
-      return res.json({
+  const fileName = req.body.fileOrFolderName;
+  const fileType = req.body.type;
+  const currentPath = req.body.path;
+
+  createFileOrFolder(currentPath, fileName, fileType)
+    .then(res => console.log(res))
+    .then(() =>  {
+        res.json({
         message: "File Created Successfully"
       })
     })
-  }
-  else 
-  {
-    fs.mkdir(destination, (err) => {
-      if(err) console.log("Error while creating Folder: ", err);
-      return res.json({
-        message: "Folder Created Successfully"
-      })
-    })
-  }
-})
+    .catch(error => console.log(error))
+});
+
+
+
+app.get("/search", (req, res) => {
+  let;
+});
 
 // to delete any particular file
-app.delete("/delete", (req, res) => 
-{
+app.delete("/delete", (req, res) => {
   let filePath = req.body;
-  fs.unlink(filePath, (err) => 
-  {
+  fs.unlink(filePath, (err) => {
     if (err) {
       console.log("Error is here");
       console.log("Error: ", err.message);
@@ -162,54 +144,49 @@ function filterDot(item) {
   });
 }
 
-
 function isDirectory(way, file) {
-  return fs.statSync(path.join(way, file)).isDirectory()
+  return fs.statSync(path.join(way, file)).isDirectory();
 }
 
-
-function getFilesWithIcons(pwd, filesOrFoldersArr) 
-{
-  let filesWithIcon = []
-  filesWithIcon =  filesOrFoldersArr.map((eachItem) => 
-  {
+function getFilesWithIcons(pwd, filesOrFoldersArr) {
+  let filesWithIcon = [];
+  filesWithIcon = filesOrFoldersArr.map((eachItem) => {
     // console.log("eachItem", eachItem)
     let itemType;
     let iconKey = "icon";
 
-    if(isDirectory(pwd, eachItem))
-    {
-      itemType = "folders"
+    if (isDirectory(pwd, eachItem)) {
+      itemType = "folders";
       let item = eachItem.toLowerCase();
       return {
         name: eachItem,
         type: itemType,
-        icon: icons[itemType][item] ? icons[itemType][item][iconKey] : icons[itemType]["default"][iconKey]
-      }
-    }
-    else 
-    {
-      itemType = "files"
-      let index = eachItem.lastIndexOf(".")
-      let ext = eachItem.slice(index+1)
+        icon: icons[itemType][item]
+          ? icons[itemType][item][iconKey]
+          : icons[itemType]["default"][iconKey],
+      };
+    } else {
+      itemType = "files";
+      let index = eachItem.lastIndexOf(".");
+      let ext = eachItem.slice(index + 1);
       return {
         name: eachItem,
         type: itemType,
-        icon: icons[itemType][ext] ? icons[itemType][ext][iconKey] : icons[itemType]["default"][iconKey]
-      }
+        icon: icons[itemType][ext]
+          ? icons[itemType][ext][iconKey]
+          : icons[itemType]["default"][iconKey],
+      };
     }
-   
-  })
+  });
 
   return filesWithIcon;
 }
 
 // this is for get Files or Folders icon directly
-function getIcon(type, fileFolderName ) {
+function getIcon(type, fileFolderName) {
   let iconKey = "icon";
-  if(type == "folders") {
+  if (type == "folders") {
     // i will do these later
-
   } else {
     let index = fileFolderName.lastIndexOf(".");
     let ext = fileFolderName.slice(index + 1);
@@ -217,57 +194,79 @@ function getIcon(type, fileFolderName ) {
     return {
       name: fileFolderName,
       type,
-      icon: icons[type][ext] ? icons[type][ext][iconKey] : icons[type]["default"][iconKey]
-    }
+      icon: icons[type][ext]
+        ? icons[type][ext][iconKey]
+        : icons[type]["default"][iconKey],
+    };
   }
   console.log("Some error inside getIcon");
 }
- 
-function readDirectory(pwd) 
-{
-  console.log("readDirectory called")
-  return new Promise((resolve, reject) => 
-  {
-    fs.readdir(pwd, (err, fileNames) => 
-    {
-      if(err) {
-        console.log("Error occured while reading Directory")
-        reject(err)
+
+function readDirectory(pwd) {
+  console.log("readDirectory called");
+  return new Promise((resolve, reject) => {
+    fs.readdir(pwd, (err, fileNames) => {
+      if (err) {
+        console.log("Error occured while reading Directory");
+        reject(err);
       }
-      if(fileNames) {
-        resolve(getFilesWithIcons(pwd, filterDot(fileNames))) 
+      if (fileNames) {
+        resolve(getFilesWithIcons(pwd, filterDot(fileNames)));
       }
-    })
-  })
+    });
+  });
 }
 
-
-function fileOpener(path) 
-{
+function fileOpener(path) {
   let osType = process.platform;
   let cmd;
-  switch(osType) {
-    case("win32"): 
+  switch (osType) {
+    case "win32":
       cmd = "cmd";
       command = ["/c", "start", "", path];
       break;
-    case("linux"):
+    case "linux":
       cmd = "sh";
-      command = [path]
+      command = [path];
       break;
-    case("ios"):
+    case "ios":
       cmd = "open";
-      command [path]
+      command[path];
+      break;
+    default:
+      console.log("Error while opening the file");
+      return;
   }
 
   const child = spawn(cmd, command, {
     detached: true,
-    stdio: "ignore"
-  })
-  child.unref();  
-
-  
+    stdio: "ignore",
+  });
+  child.unref();
 }
 
-
-
+function createFileOrFolder(currentPath, fileName, fileType) {
+  console.log("Function createFile called")
+  return new Promise((resolve, reject) => {
+    const destination = path.join(currentPath, fileName);
+    if (fileType === "file") {
+      fs.writeFile(destination, "", (err) => {
+        if (err) {
+          console.log("Error while creating file : ", err);
+          reject("Error while creating file")
+        } else {
+          resolve("File created Successfully");
+        }
+      });
+    } else {
+      fs.mkdir(destination, (err) => {
+        if (err) {
+          reject("Error while creating folder")
+          return;
+        } else {
+          resolve("Folder Created Successfully");
+        }
+      });
+    }
+  });
+}
