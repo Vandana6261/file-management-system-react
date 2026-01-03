@@ -20,18 +20,6 @@ const home = require("os").homedir();
 let pwd = home;
 const fs = require("fs");
 
-const platformCommands = [
-  { platform: "aix",     cmd: "sh",       startCmd: "xdg-open" },
-  { platform: "darwin",  cmd: "open",     startCmd: "open" },
-  { platform: "freebsd", cmd: "sh",       startCmd: "xdg-open" },
-  { platform: "linux",   cmd: "sh",       startCmd: "xdg-open" },
-  { platform: "openbsd", cmd: "sh",       startCmd: "xdg-open" },
-  { platform: "sunos",   cmd: "sh",       startCmd: "xdg-open" },
-  { platform: "win32",   cmd: "cmd",      startCmd: "start" },
-  { platform: "android", cmd: "sh",       startCmd: "am start" },
-  { platform: "ios",     cmd: "open",     startCmd: "open" }
-];
-
 
 // this is check what frontend is requesting
 app.use((req, res, next) => {
@@ -257,11 +245,20 @@ function readDirectory(pwd)
 function fileOpener(path) 
 {
   let osType = process.platform;
-  let osInfo = platformCommands.find((eachOsInfo) => eachOsInfo.platform == osType)
-  path = path.normalize()
-  let cmd = osInfo.cmd;
-  let startCmd = osInfo.startCmd;
-  let command = ["/c", startCmd, "", path]
+  let cmd;
+  switch(osType) {
+    case("win32"): 
+      cmd = "cmd";
+      command = ["/c", "start", "", path];
+      break;
+    case("linux"):
+      cmd = "sh";
+      command = [path]
+      break;
+    case("ios"):
+      cmd = "open";
+      command [path]
+  }
 
   const child = spawn(cmd, command, {
     detached: true,
