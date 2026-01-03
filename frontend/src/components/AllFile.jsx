@@ -27,7 +27,7 @@ function AllFile() {
   
   return (
     <>
-      <div className="text-black dark:text-white w-full p-4">
+      <div className="text-black dark:text-white w-full p-4 overflow-y-auto max-h-[78vh]">
         <div className="files flex flex-wrap justify-center mt-4 gap-4">
           {/* <div>{backword}</div> */}
           {filesData && filesData.map((item, index) => {
