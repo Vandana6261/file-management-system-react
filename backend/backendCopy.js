@@ -115,9 +115,14 @@ app.post("/create", (req, res) => {
 
 
 
-app.get("/search", (req, res) => {
-  let;
-});
+// app.get("/search?value", (req, res) => {
+//   let valToBeSearched = req.query.value;
+//   let currentPath = req.body.path;
+
+//   searchByName(currentPath, valToBeSearched)
+//     .then(res => console.log(res))
+//     .catch(err => console.log(err))
+// });
 
 // to delete any particular file
 app.delete("/delete", (req, res) => {
@@ -269,4 +274,10 @@ function createFileOrFolder(currentPath, fileName, fileType) {
       });
     }
   });
+}
+
+function searchByName(currentPath, valToBeSearched) {
+  return new Promise((resolve, reject) => {
+    // const 
+  })
 }
