@@ -104,25 +104,91 @@ app.post("/create", (req, res) => {
   const currentPath = req.body.path;
 
   createFileOrFolder(currentPath, fileName, fileType)
-    .then(res => console.log(res))
-    .then(() =>  {
-        res.json({
-        message: "File Created Successfully"
-      })
+    .then((res) => console.log(res))
+    .then(() => {
+      res.json({
+        message: "File Created Successfully",
+      });
     })
-    .catch(error => console.log(error))
+    .catch((error) => console.log(error));
 });
 
+app.get("/search", async (req, res) => {
+  // path : C:\Users\vvand\Desktop\sample\src\package1
+  let valToBeSearched = req.query.name;
+  let currentPath = req.query.path;
+  // console.log(currentPath, valToBeSearched)
+  let searchArr = await searchByName(currentPath, valToBeSearched);
+  console.log(searchArr, "122")
+  7
+  if(searchArr) {
+    res.json({
+      message: "Success",
+      body: searchArr,
+  })
+  } else {
+    res.json({
+      message: "Something wrong happen"
+    })
+  }
+});
 
+function searchByName(currentPath="", valToBeSearched) {
+  // Get-ChildItem "C:\Users\vvand\Desktop\sample" -Recurse -Filter "*m*"
+  let osType = process.platform;
+  
+  let cmd;
+  switch (osType) {
+    case "win32":
+      cmd = "powershell";
+      command = ["-NoProfile","-Command", "Get-ChildItem","-Path",`"${currentPath}"`,"-Filter",`"*${valToBeSearched}*"`,"-Recurse","-ErrorAction","SilentlyContinue","|","Select-Object","-ExpandProperty","FullName"];
+      // command = ["-NoProfile","-Command", command];
+      break;
+    default:
+      console.log("Error while searching file");
+      return;
+  }
+  return search(cmd, command)
+  .then(res => {
+    // console.log("Start")
+    // console.log(res)
+    // console.log("end")
+    console.log(res)
+    return res;
+  })
+  .catch(err => console.log("error in 144"))
+  
+}
 
-// app.get("/search?value", (req, res) => {
-//   let valToBeSearched = req.query.value;
-//   let currentPath = req.body.path;
+function search(cmd, command) {
+  return new Promise((resolve, reject) => {
+    const child = spawn(cmd, command);
+    let output = ""
+    child.stdout.on("data", (data) => {
+      // console.log(typeof data)
+      // console.log(data.toString(), "data")
+      output += data.toString();
+    });
 
-//   searchByName(currentPath, valToBeSearched)
-//     .then(res => console.log(res))
-//     .catch(err => console.log(err))
-// });
+    child.stderr.on("data", (data) => {
+      console.error(data.toString());
+      });
+
+    child.on('close', code => {
+      // console.log(code)
+      console.log('Exited with code:', code);
+      if(code != 0) {
+        reject(new Error(`Error while searching file -> ${code}`))
+      } else {
+        // console.log(output.split(" "))
+        resolve(output.trim().split(/\r?\n/))
+      }
+    }); 
+  })
+}
+
+// searchByName("C:Users\\vvand\\Desktop\\sample", "s");
+// .then(res => console.log(res)).catch(err => console.log(err))
 
 // to delete any particular file
 app.delete("/delete", (req, res) => {
@@ -187,14 +253,23 @@ function getFilesWithIcons(pwd, filesOrFoldersArr) {
   return filesWithIcon;
 }
 
+// console.log(getIcon("folder", "hello"))
 // this is for get Files or Folders icon directly
 function getIcon(type, fileFolderName) {
   let iconKey = "icon";
   if (type == "folders") {
     // i will do these later
+    return {
+      name: fileFolderName,
+      type,
+      icon: icons[type][fileFolderName]
+      ? icons[type][item][iconKey]
+      : icons[itemsType]["default"][iconKey]
+    }
   } else {
     let index = fileFolderName.lastIndexOf(".");
     let ext = fileFolderName.slice(index + 1);
+    console.log(ext)
     // console.log(icons[type][ext] ? icons[type][ext][iconKey] : icons[itemType]["default"][iconKey])
     return {
       name: fileFolderName,
@@ -251,14 +326,14 @@ function fileOpener(path) {
 }
 
 function createFileOrFolder(currentPath, fileName, fileType) {
-  console.log("Function createFile called")
+  console.log("Function createFile called");
   return new Promise((resolve, reject) => {
     const destination = path.join(currentPath, fileName);
     if (fileType === "file") {
       fs.writeFile(destination, "", (err) => {
         if (err) {
           console.log("Error while creating file : ", err);
-          reject("Error while creating file")
+          reject("Error while creating file");
         } else {
           resolve("File created Successfully");
         }
@@ -266,7 +341,7 @@ function createFileOrFolder(currentPath, fileName, fileType) {
     } else {
       fs.mkdir(destination, (err) => {
         if (err) {
-          reject("Error while creating folder")
+          reject("Error while creating folder");
           return;
         } else {
           resolve("Folder Created Successfully");
@@ -274,10 +349,4 @@ function createFileOrFolder(currentPath, fileName, fileType) {
       });
     }
   });
-}
-
-function searchByName(currentPath, valToBeSearched) {
-  return new Promise((resolve, reject) => {
-    // const 
-  })
 }
