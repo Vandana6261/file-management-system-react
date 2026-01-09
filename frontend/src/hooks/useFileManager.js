@@ -142,6 +142,16 @@ function useFileManager() {
       console.log("Error in catch block in getRecentFileApi : ", error)
     }
   }
+
+  const searchApi = async(currentPath, searchVal) => {
+    try {
+      const response = await fetch(`http://localhost:3000/search?name=${searchVal}&${currentPath}`)
+      const data = await response.json()
+      console.log(data)
+    } catch(err) {
+      console.log(err)
+    }
+  }
   
 
   return {
@@ -150,6 +160,7 @@ function useFileManager() {
     getFileApi,
     createFileOrFolderApi,
     getRecentFileDataApi,
+    searchApi,
   }
 }
 
