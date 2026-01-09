@@ -117,9 +117,10 @@ app.get("/search", async (req, res) => {
   // path : C:\Users\vvand\Desktop\sample\src\package1
   let valToBeSearched = req.query.name;
   let currentPath = req.query.path;
+  console.log(currentPath)
   // console.log(currentPath, valToBeSearched)
   let searchArr = await searchByName(currentPath, valToBeSearched);
-  console.log(searchArr, "122")
+  // console.log(searchArr, "122")
   7
   if(searchArr) {
     res.json({

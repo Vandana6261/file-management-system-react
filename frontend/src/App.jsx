@@ -6,11 +6,13 @@ import AllFile from './components/AllFile';
 import CreateFileModal from './components/CreateFileModal';
 import { useEffect } from 'react';
 import RecentFile from './components/RecentFile';
+import useFileContext from './context/FileContext';
 
 
 function App() {
   const [open, setOpen] = useState(false);
   const [showRecent, setShowRecent] = useState(false);
+  const {searchData, setSearchData} = useFileContext()
   console.log(showRecent)
   return (
     <>
@@ -19,7 +21,7 @@ function App() {
             <AsideBox showRecent={showRecent} setShowRecent={setShowRecent}/>
           </div>
           <div className="w-4/5">
-              <Header open={open} setOpen={setOpen}/>
+              <Header open={open} setOpen={setOpen} searchData={searchData} setSearchData={setSearchData}/>
               {showRecent ? <RecentFile /> : <AllFile />}
           </div>
       </div>
