@@ -30,7 +30,7 @@ function AllFile() {
       <div className="text-black dark:text-white w-full p-4 overflow-y-auto max-h-[78vh]">
         <div className="files flex flex-wrap justify-center mt-4 gap-4">
           {/* <div>{backword}</div> */}
-          {filesData && filesData.map((item, index) => {
+          {filesData ?  filesData && filesData.map((item, index) => {
             return (
               <div
                 key={index}
@@ -41,13 +41,15 @@ function AllFile() {
                 <div className="text-6xl">{item.icon}</div>
                 <p
                   className="mx-4 select-none truncate w-full text-center p-2 "
-                  
                 >
                   {item.name}
                 </p>
               </div>
             );
-          })}
+          }) 
+          : 
+          <p>Loading</p>
+        }
         </div>
       </div>
     </>
