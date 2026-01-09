@@ -5,9 +5,9 @@ import useFileManager from "../hooks/useFileManager";
 import useFileContext from "../context/FileContext";
 
 function Header({ setOpen, open }) {
-  const { homeDir, backword, setBackword, currentPath, forward, setForward, darkTheme, setDarkTheme } =
+  const { homeDir, backword, setBackword, currentPath, forward, setForward, darkTheme, setDarkTheme, searchData, setSearchData  } =
     useFileContext();
-  const { getInsideFileApi, loadFiles } = useFileManager();
+  const { getInsideFileApi, loadFiles, searchApi} = useFileManager();
 
   const updateBackword = () => {
     console.log("backword", backword);
@@ -67,8 +67,17 @@ function Header({ setOpen, open }) {
       localStorage.setItem("theme", "dark")
       setDarkTheme(true);
     }
+  }
+  let timeVal;
+  const search = function(e) {
+    let val = e.target.value;
+    clearTimeout(timeVal)
+    if(!val) return;
 
-
+    timeVal = setTimeout(() => {
+      searchApi(currentPath, val)
+      console.log(val)
+    }, 3000)
   }
 
   // console.log(open)
@@ -95,7 +104,7 @@ function Header({ setOpen, open }) {
               </div>
               <div
                 className="path cursor-pointer px-4 py-2 rounded bg-primary transition-all duration-200 hover:rotate-6 hover:scale-105 text-white"
-                onClick={() => loadFiles()}
+                onKeyUp={() => loadFiles()}
               >
                 <p>Go To Home</p>
               </div>
@@ -107,6 +116,7 @@ function Header({ setOpen, open }) {
               className="border-white  py-2 px-4 rounded-full outline-1 transition-all duration-200 dark:focus:outline-white w-64  focus:shadow-[0_0_10px_rgba(100, 100, 100, 0.8) dark:placeholder:text-gray-300 placeholder:text-black"
               type="text"
               placeholder="Search Files and Folders"
+              onChange={(e) => search(e)}
             />
             <button
               className="bg-primary px-4 py-2 rounded transition-all duration-200 hover:rotate-6 hover:scale-105 text-white"

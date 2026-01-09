@@ -27,7 +27,7 @@ function RecentFile() {
 
   return (
     <>
-      <div className=' bg-mail-light w-full rounded-xl p-4 cursor-pointer'>
+      <div className=' bg-main-light w-full rounded-xl p-4 cursor-pointer overflow-y-auto max-h-[80vh]'>
         {/* {console.log(data)} */}
         {
           data && data.length > 0 && data.map((each, index) => (

@@ -11,6 +11,7 @@ export function FileProvider({children}) {
     const [forward, setForward] = useState([])
     const [homeDir, setHomeDir] = useState("")
     const [recentFile, setRecentFile] = useState([])
+    const [searchData, setSearchData] = useState([])
 
     // useEffect(() => {
     //     let recent = JSON.parse(localStorage.getItem("recent")) || []
@@ -26,6 +27,7 @@ export function FileProvider({children}) {
             forward, setForward,
             homeDir, setHomeDir,
             recentFile, setRecentFile,
+            searchData, setSearchData,
         }}
         >
             {children}
