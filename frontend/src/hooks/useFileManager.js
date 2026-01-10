@@ -145,7 +145,7 @@ function useFileManager() {
 
   const searchApi = async(currentPath, searchVal) => {
     try {
-      const response = await fetch(`http://localhost:3000/search?name=${searchVal}&${currentPath}`)
+      const response = await fetch(`http://localhost:3000/search?name=${searchVal}&path=${currentPath}`)
       const data = await response.json()
       console.log(data)
     } catch(err) {
