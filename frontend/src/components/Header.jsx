@@ -1,13 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { FaArrowRight } from "react-icons/fa";
 import useFileManager from "../hooks/useFileManager";
 import useFileContext from "../context/FileContext";
 
 function Header({ setOpen, open }) {
-  const { homeDir, backword, setBackword, currentPath, forward, setForward, darkTheme, setDarkTheme, searchData, setSearchData  } =
+  const { homeDir, backword, setBackword, filesData, setFilesData, currentPath, forward, setForward, darkTheme, setDarkTheme, searchData, setSearchData  } =
     useFileContext();
   const { getInsideFileApi, loadFiles, searchApi} = useFileManager();
+  const [searchText, setSearchText] = useState("")
 
   const updateBackword = () => {
     console.log("backword", backword);
@@ -70,12 +71,20 @@ function Header({ setOpen, open }) {
   }
   let timeVal;
   const search = function(e) {
-    let val = e.target.value;
+    let val = e.target.value.trim();
+    setSearchText(e.target.value)
     clearTimeout(timeVal)
-    if(!val) return;
-
+    if(!val) {
+      // clearTimeout(timeVal)
+      console.log("val is empty", val)
+      console.log(timeVal)
+      return;
+    }
+    // setFilesData("");
     timeVal = setTimeout(() => {
+      console.log("inside timeout")
       searchApi(currentPath, val)
+      // setSearchText("")
       console.log(val)
     }, 3000)
   }
@@ -116,6 +125,7 @@ function Header({ setOpen, open }) {
               className="border-white  py-2 px-4 rounded-full outline-1 transition-all duration-200 dark:focus:outline-white w-64  focus:shadow-[0_0_10px_rgba(100, 100, 100, 0.8) dark:placeholder:text-gray-300 placeholder:text-black"
               type="text"
               placeholder="Search Files and Folders"
+              value={searchText}
               onChange={(e) => search(e)}
             />
             <button
