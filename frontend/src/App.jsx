@@ -12,7 +12,7 @@ import useFileContext from './context/FileContext';
 function App() {
   const [open, setOpen] = useState(false);
   const [showRecent, setShowRecent] = useState(false);
-  const {searchData, setSearchData} = useFileContext()
+  
   return (
     <>
       <div className="flex bg-main-light dark:bg-[#212121]">
@@ -20,7 +20,7 @@ function App() {
             <AsideBox showRecent={showRecent} setShowRecent={setShowRecent}/>
           </div>
           <div className="w-4/5">
-              <Header open={open} setOpen={setOpen} searchData={searchData} setSearchData={setSearchData}/>
+              <Header open={open} setOpen={setOpen}/>
               {showRecent ? <RecentFile /> : <AllFile />}
           </div>
       </div>
