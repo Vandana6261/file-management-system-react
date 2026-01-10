@@ -13,6 +13,7 @@ function useFileManager() {
         console.log("Error response is not ok: ", response.status);
       } else {
         const data = await response.json();
+        console.log(data)
         setFilesData(data.body)
         setCurrentPath(data.home);
         setBackword((prev) => [data.home]);
@@ -145,9 +146,13 @@ function useFileManager() {
 
   const searchApi = async(currentPath, searchVal) => {
     try {
-      const response = await fetch(`http://localhost:3000/search?name=${searchVal}&path=${currentPath}`)
-      const data = await response.json()
-      console.log(data)
+      if(searchVal !== ""){
+        setFilesData("")
+        const response = await fetch(`http://localhost:3000/search?name=${searchVal}&path=${currentPath}`)
+        const data = await response.json()
+        setFilesData(data.body)
+        console.log(data)
+      }
     } catch(err) {
       console.log(err)
     }
