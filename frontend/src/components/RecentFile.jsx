@@ -35,12 +35,12 @@ function RecentFile() {
               onClick={() => getInsideFileApi(each.path)}
             >
               <div className='flex justify-between items-center bg-card-light shadow-md rounded'>
-               <div className='w-fit bg-'>
-                 <p className='text-4xl'>{each.icon}</p>
-               </div>
+                <div className='w-fit bg-'>
+                  <p className='text-4xl'>{each.icon}</p>
+                </div>
                 <div className='text-md  p-1 bg-header-light w-full '>
                   <p>{each.name}</p>
-                <p>{each.path}</p>
+                  <p className='break-all'>{each.path}</p>
                 </div>
               </div>
             </div>
