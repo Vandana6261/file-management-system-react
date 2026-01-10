@@ -13,7 +13,6 @@ function App() {
   const [open, setOpen] = useState(false);
   const [showRecent, setShowRecent] = useState(false);
   const {searchData, setSearchData} = useFileContext()
-  console.log(showRecent)
   return (
     <>
       <div className="flex bg-main-light dark:bg-[#212121]">

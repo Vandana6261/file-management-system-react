@@ -117,11 +117,11 @@ app.get("/search", async (req, res) => {
   // path : C:\Users\vvand\Desktop\sample\src\package1
   let valToBeSearched = req.query.name;
   let currentPath = req.query.path;
-  console.log(currentPath)
+  console.log(currentPath, 120)
   // console.log(currentPath, valToBeSearched)
   let searchArr = await searchByName(currentPath, valToBeSearched);
   // console.log(searchArr, "122")
-  7
+  
   if(searchArr) {
     res.json({
       message: "Success",
@@ -182,6 +182,7 @@ function search(cmd, command) {
         reject(new Error(`Error while searching file -> ${code}`))
       } else {
         // console.log(output.split(" "))
+        console.log(output.trim().split(/\r?\n/))
         resolve(output.trim().split(/\r?\n/))
       }
     }); 
