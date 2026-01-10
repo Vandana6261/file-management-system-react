@@ -117,15 +117,15 @@ app.get("/search", async (req, res) => {
   // path : C:\Users\vvand\Desktop\sample\src\package1
   let valToBeSearched = req.query.name;
   let currentPath = req.query.path;
-  console.log(currentPath, 120)
-  // console.log(currentPath, valToBeSearched)
+  // console.log(currentPath, valToBeSearched, 120)
   let searchArr = await searchByName(currentPath, valToBeSearched);
   // console.log(searchArr, "122")
-  
+  let searchArrIcon = getIconsForSearch(searchArr).sort()
+  // console.log(searchArrIcon, 125)
   if(searchArr) {
     res.json({
       message: "Success",
-      body: searchArr,
+      body: searchArrIcon,
   })
   } else {
     res.json({
@@ -155,9 +155,10 @@ function searchByName(currentPath="", valToBeSearched) {
     // console.log(res)
     // console.log("end")
     console.log(res)
+    console.log(path.basename(res[0]))
     return res;
   })
-  .catch(err => console.log("error in 144"))
+  .catch(err => console.log("error while searching....", err))
   
 }
 
@@ -166,8 +167,6 @@ function search(cmd, command) {
     const child = spawn(cmd, command);
     let output = ""
     child.stdout.on("data", (data) => {
-      // console.log(typeof data)
-      // console.log(data.toString(), "data")
       output += data.toString();
     });
 
@@ -181,8 +180,7 @@ function search(cmd, command) {
       if(code != 0) {
         reject(new Error(`Error while searching file -> ${code}`))
       } else {
-        // console.log(output.split(" "))
-        console.log(output.trim().split(/\r?\n/))
+        // here we covert output string into array and send that array
         resolve(output.trim().split(/\r?\n/))
       }
     }); 
@@ -255,6 +253,47 @@ function getFilesWithIcons(pwd, filesOrFoldersArr) {
   return filesWithIcon;
 }
 
+function getIconsForSearch(pathArr) {
+  let filesWithIcon = ["can't find this file of folder"];
+  if(pathArr[0] == '') {
+    return filesWithIcon;
+  }
+  console.log(pathArr)
+  filesWithIcon = pathArr.map((eachItem) => {
+    // console.log("eachItem", eachItem)
+    let eachItemName = path.basename(eachItem)
+    let itemType;
+    let iconKey = "icon";
+
+    if (fs.statSync(eachItem).isDirectory()) {
+      itemType = "folders";
+      let item = eachItemName.toLowerCase();
+      return {
+        name: eachItemName,
+        type: itemType,
+        icon: icons[itemType][item]
+          ? icons[itemType][item][iconKey]
+          : icons[itemType]["default"][iconKey],
+        path: eachItem
+      };
+    } else {
+      itemType = "files";
+      let index = eachItemName.lastIndexOf(".");
+      let ext = eachItemName.slice(index + 1);
+      return {
+        name: eachItemName,
+        type: itemType,
+        icon: icons[itemType][ext]
+          ? icons[itemType][ext][iconKey]
+          : icons[itemType]["default"][iconKey],
+        path: eachItem
+      };
+    }
+  });
+
+  return filesWithIcon;
+}
+
 // console.log(getIcon("folder", "hello"))
 // this is for get Files or Folders icon directly
 function getIcon(type, fileFolderName) {
@@ -271,7 +310,7 @@ function getIcon(type, fileFolderName) {
   } else {
     let index = fileFolderName.lastIndexOf(".");
     let ext = fileFolderName.slice(index + 1);
-    console.log(ext)
+    // console.log(ext)
     // console.log(icons[type][ext] ? icons[type][ext][iconKey] : icons[itemType]["default"][iconKey])
     return {
       name: fileFolderName,
