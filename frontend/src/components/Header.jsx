@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { FaArrowRight } from "react-icons/fa";
 import useFileManager from "../hooks/useFileManager";
@@ -9,6 +9,7 @@ function Header({ setOpen, open }) {
     useFileContext();
   const { getInsideFileApi, loadFiles, searchApi} = useFileManager();
   const [searchText, setSearchText] = useState("")
+  const timerValRef = useRef(null)
 
   const updateBackword = () => {
     console.log("backword", backword);
@@ -16,20 +17,18 @@ function Header({ setOpen, open }) {
 
     if (backword.length > 1) {
       let lastVisitedPath = backword[backword.length - 1];
-
       let newArr = [...forward];
+      
       if (forward.length > 10) {
         newArr.shift();
       }
       newArr.push(currentPath)
       setForward(newArr)
-
       // setForward((prev) => [...prev, currentPath]);
       getInsideFileApi(lastVisitedPath);
-    } else {
-      if (backword.length > 0) loadFiles(backword[0]);
-    }
+    } else if (backword.length > 0) loadFiles(backword[0]);
   };
+
 
   const updateForward = () => {
     // console.log("udateForward clicked")
@@ -44,6 +43,7 @@ function Header({ setOpen, open }) {
     }
   };
 
+
   useEffect(() => {
     let theme = localStorage.getItem("theme") || "dark"
     if (theme == "dark") {
@@ -54,6 +54,7 @@ function Header({ setOpen, open }) {
       setDarkTheme(false);
     }
   }, [])
+
 
   // document.documentElement.classList.add("dark");
   const toggleTheme = () => {
@@ -69,25 +70,27 @@ function Header({ setOpen, open }) {
       setDarkTheme(true);
     }
   }
-  let timeVal;
+
+
   const search = function(e) {
     let val = e.target.value.trim();
     setSearchText(e.target.value)
-    clearTimeout(timeVal)
+    clearTimeout(timerValRef.current)
     if(!val) {
-      // clearTimeout(timeVal)
+      clearTimeout(timerValRef.current)
       console.log("val is empty", val)
-      console.log(timeVal)
+      console.log(timerValRef.current)
       return;
     }
     // setFilesData("");
-    timeVal = setTimeout(() => {
+    timerValRef.current = setTimeout(() => {
       console.log("inside timeout")
       searchApi(currentPath, val)
       // setSearchText("")
       console.log(val)
     }, 3000)
   }
+
 
   // console.log(open)
   return (
@@ -113,7 +116,7 @@ function Header({ setOpen, open }) {
               </div>
               <div
                 className="path cursor-pointer px-4 py-2 rounded bg-primary transition-all duration-200 hover:rotate-6 hover:scale-105 text-white"
-                onKeyUp={() => loadFiles()}
+                onClick={() => loadFiles()}
               >
                 <p>Go To Home</p>
               </div>
