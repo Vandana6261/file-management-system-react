@@ -73,6 +73,7 @@ function Header({ setOpen, open }) {
 
 
   const search = function(e) {
+    // Here I am using deboucing technique........
     let val = e.target.value.trim();
     setSearchText(e.target.value)
     clearTimeout(timerValRef.current)
@@ -97,7 +98,7 @@ function Header({ setOpen, open }) {
     <>
       <header className="sticky top-0 bg-header-light dark:bg-header-dark z-20 w-full p-4 dark:text-white border-b-2 border-primary ">
         {/* left part of header */}
-        <div className="flex justify-between items-center ">
+        <div className="flex justify-between items-center select-none">
 
           <div className="top-left flex items-center gap-4 flex-1">
               <div className="icons-div flex gap-2">
@@ -143,7 +144,7 @@ function Header({ setOpen, open }) {
           </div>
         </div>
 
-        <div className="mt-2 ">
+        <div className="mt-2 select-none cursor-pointer">
           {currentPath}
         </div>
 
