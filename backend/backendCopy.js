@@ -51,7 +51,7 @@ app.post("", (req, res) => {
   });
 });
 
-// call from getFile function
+// call from getFileApi function
 app.get("", (req, res) => {
   // console.log("Get is called with path ", pwd)
   if (fs.statSync(pwd).isDirectory()) {
