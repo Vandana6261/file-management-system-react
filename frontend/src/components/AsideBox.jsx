@@ -11,8 +11,19 @@ function AsideBox( { showRecent, setShowRecent} ) {
   const { getInsideFileApi } = useFileManager();
   // console.log(homeDir)
 
+  const storageLocation  = [
+    {name: "Desktop", icon: "🖥️"}, 
+    {name: "OneDrive", icon: "⬇️"}, 
+    {name: "Downloads", icon: "⬇️"}, 
+    {name: "Music", icon: "🎵"},
+    {name: "Shared", icon: "👥"},
+    {name: "Trash", icon: "🗑️"},
+    {name: "Favourite", icon: "⭐"},
+  ]
+
   const getInsideSpecifiLocation = (current) => {
     // console.log(active)
+    // if(storageLocation.find(each => each.name === current)) console.log("Yeh match")
     if (
       current == "Desktop" ||
       current == "Music" ||
@@ -20,9 +31,9 @@ function AsideBox( { showRecent, setShowRecent} ) {
       current == "OneDrive"
     ) {
       let path = `${homeDir}\\${current}`;
-      console.log(path);
       getInsideFileApi(path);
     }
+    else return;
   };
 
   return (
@@ -34,70 +45,30 @@ function AsideBox( { showRecent, setShowRecent} ) {
         >
           Dashboard
         </h2>
-        <ul className="flex flex-col gap-0 mt-4 ">
-          <li
-            className={` cursor-pointer rounded p-2  hover:translate-x-1.5   transition-all duration-200 ${
-              active == "My Files"
+
+        <ul className="flex flex-col gap-0 mt-4">
+          {
+            storageLocation.map((item, index) => (
+              <li className={` cursor-pointer rounded p-2  hover:translate-x-1.5 transition-all duration-200 ${
+              active == item
                 ? "bg-secondary text-black"
                 : "hover:bg-hoverColor"
-            } `}
-            onClick={() => setActive("My Files")}
-          >
-            📄 My Files
-          </li>
-          <li
-            className={`border-gray-400 cursor-pointer p-2 rounded hover:translate-x-1.5  transition-all duration-200 ${
-              active == "Desktop" ? "bg-secondary" : "hover:bg-hoverColor"
-            }`}
-            onClick={() => {
-              setActive("Desktop");
-              getInsideSpecifiLocation("Desktop");
-            }}
-          >
-            🖥️ Desktop
-          </li>
-          <li
-            className={`border-gray-400 cursor-pointer p-2 rounded hover:translate-x-1.5 transition-all duration-200 ${
-              active == "OneDrive" ? "bg-secondary" : "hover:bg-hoverColor"
-            }`}
-            onClick={() => {
-              setActive("OneDrive");
-              getInsideSpecifiLocation("OneDrive");
-            }}
-          >
-            ⬇️ OneDrive
-          </li>
-          <li
-            className={`border-gray-400 cursor-pointer p-2 rounded hover:translate-x-1.5 transition-all duration-200 ${
-              active == "Download" ? "bg-secondary" : "hover:bg-hoverColor"
-            }`}
-            onClick={() => {
-              setActive("Download");
-              getInsideSpecifiLocation("Downloads");
-            }}
-          >
-            ⬇️ Downloads
-          </li>
-          <li
-            className={`border-gray-400 cursor-pointer p-2 rounded hover:translate-x-1.5 transition-all duration-200 ${
-              active == "Music" ? "bg-secondary" : "hover:bg-hoverColor"
-            }`}
-            onClick={() => {
-              setActive("Music");
-              getInsideSpecifiLocation("Music");
-            }}
-          >
-            🎵 Music
-          </li>
+              } `}
+                onClick={() => {
+                  setActive(item)
+                  getInsideSpecifiLocation(item.name)
+                  // this cause some unnecessary effect, will fix it later
+                  // setShowRecent(false)
+                }}
+                
+              >
+                {item.icon} {item.name}
+              </li>
+            ))
+          }
+        </ul>
 
-          <li
-            className={`border-gray-400 cursor-pointer p-2 rounded hover:translate-x-1.5 transition-all duration-200 ${
-              active == "Shared" ? "bg-secondary" : "hover:bg-hoverColor"
-            }`}
-            onClick={() => setActive("Shared")}
-          >
-            👥 Shared
-          </li>
+        <ul className="flex flex-col gap-0 mt-4">
           <li
             className={`border-gray-400 cursor-pointer p-2 rounded hover:translate-x-1.5 transition-all duration-200 ${
               active == "Recent" ? "bg-primary" : "hover:bg-hoverColor"
@@ -110,29 +81,9 @@ function AsideBox( { showRecent, setShowRecent} ) {
                 <p>🕘 Recent</p>
                 <p  className={`${showRecent ? "rotate-180" : ""}`}>˅</p>
               </div>
-              {/* <div className="z-100 w-[70vw] fixed">
-                {showRecent && 
-                <RecentFile showRecent={showRecent} setShowRecent={setShowRecent}/>
-                }
-              </div> */}
-          </li>
-          <li
-            className={`border-gray-400 cursor-pointer p-2 rounded hover:translate-x-1.5 transition-all duration-200 ${
-              active == "Favourites" ? "bg-primary" : "hover:bg-hoverColor"
-            }`}
-            onClick={() => setActive("Favourites")}
-          >
-            ⭐ Favourites
-          </li>
-          <li
-            className={`border-gray-400 cursor-pointer p-2 rounded hover:translate-x-1.5 transition-all duration-200 ${
-              active == "Trash" ? "bg-primary" : "hover:bg-hoverColor"
-            }`}
-            onClick={() => setActive("Trash")}
-          >
-            🗑️ Trash
           </li>
         </ul>
+
       </div>
 
       <div>
