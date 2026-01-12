@@ -151,10 +151,7 @@ function searchByName(currentPath="", valToBeSearched) {
   }
   return search(cmd, command)
   .then(res => {
-    // console.log("Start")
     // console.log(res)
-    // console.log("end")
-    console.log(res)
     console.log(path.basename(res[0]))
     return res;
   })

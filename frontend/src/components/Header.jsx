@@ -79,16 +79,13 @@ function Header({ setOpen, open }) {
     clearTimeout(timerValRef.current)
     if(!val) {
       clearTimeout(timerValRef.current)
-      console.log("val is empty", val)
-      console.log(timerValRef.current)
+      // console.log("val is empty", val)
       return;
     }
     // setFilesData("");
     timerValRef.current = setTimeout(() => {
-      console.log("inside timeout")
       searchApi(currentPath, val)
-      // setSearchText("")
-      console.log(val)
+      setSearchText("")
     }, 3000)
   }
 
@@ -144,7 +141,9 @@ function Header({ setOpen, open }) {
           </div>
         </div>
 
-        <div className="mt-2 select-none cursor-pointer">
+        <div className="mt-2 select-none cursor-pointer" 
+          onClick={() => getInsideFileApi(currentPath)}
+        >
           {currentPath}
         </div>
 
