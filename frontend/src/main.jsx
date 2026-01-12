@@ -8,8 +8,8 @@ import EmptyFile from './components/EmptyFile.jsx';
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <FileProvider>
-    {/* <App /> */}
-    <EmptyFile />
+    <App />
+    {/* <EmptyFile /> */}
     </FileProvider>
   </StrictMode>,
 )
