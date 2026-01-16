@@ -6,7 +6,14 @@ function AllFile() {
   const {currentPath, setCurrentPath, filesData, backword, forward, recentFile, setRecentFile} = useFileContext()
   const {getInsideFileApi, getFileApi} = useFileManager()
   const [selectIndex, setSelectIndex] = useState(-1)
+  const [currentPage, setCurrentPage] = useState(1);
 
+  const pageSize = 20;
+  const totalPages = Math.ceil(filesData.length / pageSize);
+  const startIndex = (currentPage-1) * pageSize;
+  const currentData = filesData.slice(startIndex, startIndex + pageSize);
+
+  console.log(`pageSize = ${pageSize}, totalPages = ${totalPages}, startIndes = ${startIndex}, currentPage = ${currentPage}`)
 
   const getInsideFile = (clickedFile) => {
     // const clickedFile = e.target.textContent;
@@ -24,13 +31,15 @@ function AllFile() {
     // console.log(backword)
     getInsideFileApi(path)
   }
+
+
   
   return (
     <>
       <div className="text-black dark:text-white w-full p-4 overflow-y-auto max-h-[78vh]">
         <div className="files flex flex-wrap justify-center mt-4 gap-4">
           {/* <div>{backword}</div> */}
-          {filesData ?  filesData.map((item, index) => {
+          {currentData ?  currentData.map((item, index) => {
             if(typeof item === "string") return <p>No such file or directory</p> 
             else {
               return (
@@ -54,6 +63,31 @@ function AllFile() {
           <p key={Date.now()}>Loading...</p>
         }
         </div>
+
+        {currentData && 
+          <section className="w-[79%] p-4 mt-8 text-right fixed bottom-1 ">
+            <button 
+              className="border px-2 py-1 rounded-md mr-4 bg-primary hover:bg-[#007568bc] hover:scale-95 transition-all duration-200 text-white"
+              onClick={() => {
+                console.log("Prev Clicked")
+                setCurrentPage(pre => pre - 1)}
+              }
+              disabled={currentPage === 1}
+            >
+              Prev
+            </button>
+            <span></span>
+            <button
+              className="border px-2 py-1 rounded-md mr-4 bg-primary hover:bg-[#007568bc] hover:scale-95 transition-all duration-200 text-white"
+              onClick={() => {
+                console.log("Nex is clicked")
+                setCurrentPage(pre => pre + 1)}}
+              disabled={currentPage === totalPages}
+            >
+              Next
+            </button>
+          </section>
+        }
       </div>
     </>
   );
