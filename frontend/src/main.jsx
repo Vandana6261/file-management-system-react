@@ -3,13 +3,13 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx' 
 import { FileProvider } from "./context/FileContext";
-import EmptyFile from './components/EmptyFile.jsx';
+import EmptyFolder from './components/EmptyFolder.jsx';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <FileProvider>
     <App />
-    {/* <EmptyFile /> */}
+    {/* <EmptyFolder /> */}
     </FileProvider>
   </StrictMode>,
 )
