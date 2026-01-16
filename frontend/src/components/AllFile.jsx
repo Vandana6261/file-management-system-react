@@ -13,7 +13,6 @@ function AllFile() {
   const startIndex = (currentPage-1) * pageSize;
   const currentData = filesData.slice(startIndex, startIndex + pageSize);
 
-  console.log(`pageSize = ${pageSize}, totalPages = ${totalPages}, startIndes = ${startIndex}, currentPage = ${currentPage}`)
 
   const getInsideFile = (clickedFile) => {
     // const clickedFile = e.target.textContent;

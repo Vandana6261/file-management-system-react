@@ -13,7 +13,7 @@ function useFileManager() {
         console.log("Error response is not ok: ", response.status);
       } else {
         const data = await response.json();
-        console.log(data)
+        // console.log(data)
         setFilesData(data.body)
         setCurrentPath(data.home);
         setBackword((prev) => [data.home]);
