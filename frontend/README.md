@@ -1,16 +1,84 @@
-# React + Vite
+# 📁 File Management System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A File Management System built with React that allows users to browse, manage, and organize files and folders directly from their browser. It provides functionalities similar to a typical file explorer, including file creation, folder creation, search, and navigation controls.
 
-Currently, two official plugins are available:
+## ✨ Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Browser Files and Folders**: View all files and folders from the user's computer in a clean and intuitive interface.
+- **Create New Files and Folders**: Add new files and folders directly from the application.
+- **Search Functionality**: Quickly search for files and folders by name.
+- **Navigation Controls**: Navigation backward and through previously visited directrioies.
+- **Browser-Based Interface**: No need to install additional software; everything runs in your browser.
 
-## React Compiler
+## 🛠️ Technologies Used
+- ⚛️ **Frontend**: React.js
+- 🔗 **Statement Management**: React Hooks
+- 🎨 **Styling**: CSS 
+- 📁 **File Handling** : Browser APIs
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 💻 Installation
 
-## Expanding the ESLint configuration
+1. Clone the repository
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+    `https://github.com/Vandana6261/file-management-system-react.git`
+
+2. Navigate to the project folder
+
+    `cd file-management-system-react`
+
+3. Install dependencies
+    
+    `npm install`
+
+4. Run the Frontend
+
+    `npm start`
+
+This will start the React development server.
+
+Open your browser and go to http://localhost:3000
+
+### Running Backend 
+1. Navigate to the backend folder:
+    cd backend
+2. Install backend dependencies:
+    npm install
+3. Start the backend server:
+    npm start
+
+- By default, the server will run on http://localhost:5000
+
+- Make sure your frontend connects to this server (update API_URL in your frontend if needed).
+
+## 🚀 Usage
+Open the application in your browser at http://localhost:3000
+Use the interface to:
+
+- 📂 Browse files and folders.
+
+- 📝 Create new files and folders.
+
+- 🔍 Search for files by name.
+
+- ⬅️➡️ Navigate through directories using backward and forward buttons.
+
+## 📌 Project Scope & Limitations
+❌ No delete file functionality
+
+❌ No authentication or permissions
+
+❌ Basic UI (functionality-focused)
+
+## 🤝 Contributing
+
+Contributions are welcome! If you want to add features or improve the project, please follow these steps:
+
+1. Fork the repository
+2. Create a new branch (git checkout -b feature-name)
+3. Make your changes.
+4. Commit your changes (git commit -m 'Add some feature')
+5. Push to the branch (git push origin feature-name)
+6. Open a Pull Request
+
+
+✅ This version clearly separates frontend and backend steps, and adds instructions for running locally without live deployment issues
