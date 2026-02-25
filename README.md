@@ -1,3 +1,4 @@
+
 # 📁 File Management System
 
 ## Table of contents
@@ -13,6 +14,15 @@
 # Overview
 
 A File Management System built with React that allows users to browse, manage, and organize files and folders directly from their browser. It provides functionalities similar to a typical file explorer, including file creation, folder creation, search, and navigation controls.
+
+## Project Demo
+
+![image](assets/image.png)
+![image](assets/image2.png)
+
+## Demo Video
+
+[Preview](assets/demo.mp4)
 
 ## ✨ Features
 
