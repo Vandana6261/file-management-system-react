@@ -49,7 +49,7 @@ function AsideBox( { showRecent, setShowRecent} ) {
         <ul className="flex flex-col gap-0 mt-4">
           {
             storageLocation.map((item, index) => (
-              <li className={` cursor-pointer rounded p-2  hover:translate-x-1.5 transition-all duration-200 ${
+              <li key={index} className={` cursor-pointer rounded p-2  hover:translate-x-1.5 transition-all duration-200 ${
               active == item
                 ? "bg-secondary text-black"
                 : "hover:bg-hoverColor"

@@ -5,16 +5,13 @@ import useFileManager from "../hooks/useFileManager";
 import useFileContext from "../context/FileContext";
 
 function Header({ setOpen, open }) {
-  const { homeDir, backword, setBackword, filesData, setFilesData, currentPath, forward, setForward, darkTheme, setDarkTheme, searchData, setSearchData  } =
+  const {backword, setBackword, currentPath, forward, setForward, darkTheme, setDarkTheme} =
     useFileContext();
   const { getInsideFileApi, loadFiles, searchApi} = useFileManager();
   const [searchText, setSearchText] = useState("")
   const timerValRef = useRef(null)
 
   const updateBackword = () => {
-    // console.log("backword", backword);
-    // console.log("forward", forward);
-
     if (backword.length > 1) {
       let lastVisitedPath = backword[backword.length - 1];
       let newArr = [...forward];
@@ -24,21 +21,15 @@ function Header({ setOpen, open }) {
       }
       newArr.push(currentPath)
       setForward(newArr)
-      // setForward((prev) => [...prev, currentPath]);
       getInsideFileApi(lastVisitedPath);
     } else if (backword.length > 0) loadFiles(backword[0]);
   };
 
 
   const updateForward = () => {
-    // console.log("udateForward clicked")
-    // console.log("backword", backword)
-    // console.log("forward", forward)
     if (forward.length > 0) {
       let lastVisitedPath = forward[forward.length - 1];
-      // if(backword[backword.length-1] !== lastVisitedPath) {
       setBackword((prev) => [...prev, lastVisitedPath]);
-      // }
       getInsideFileApi(lastVisitedPath);
     }
   };
@@ -55,13 +46,10 @@ function Header({ setOpen, open }) {
     }
   }, [])
 
-
-  // document.documentElement.classList.add("dark");
   const toggleTheme = () => {
     if (darkTheme) {
       document.documentElement.classList.remove("dark");
       localStorage.setItem("theme", "light");
-      console.log(darkTheme, "darkTheme")
       setDarkTheme(false);
     } else {
       // console.log(darkTheme)
@@ -86,7 +74,7 @@ function Header({ setOpen, open }) {
     timerValRef.current = setTimeout(() => {
       searchApi(currentPath, val)
       setSearchText("")
-    }, 3000)
+    }, 2000)
   }
 
 

@@ -45,6 +45,7 @@ function useFileManager() {
         return;
       } else {
         const data = await response.json();
+        // console.log(data);
         await getFileApi(path);
       }
     } catch (error) {
@@ -73,7 +74,8 @@ function useFileManager() {
             setBackword(prev => [...prev, currentPath])
           }
           setCurrentPath(path);
-          setFilesData((prev) => data.body);
+          // console.log(data.body)
+          setFilesData(data.body)
           
         }
         else {
@@ -150,8 +152,11 @@ function useFileManager() {
         setFilesData("")
         const response = await fetch(`http://localhost:3000/search?name=${searchVal}&path=${currentPath}`)
         const data = await response.json()
+        if(data.body[0] == "can't find this file of folder") {
+
+        }
         setFilesData(data.body)
-        console.log(data)
+        console.log()
       }
     } catch(err) {
       console.log(err)
