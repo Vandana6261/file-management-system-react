@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import useFileContext from "../context/FileContext"
 import useFileManager from '../hooks/useFileManager.js';
+import Loading from "./Loading.jsx";
 
 function AllFile() {
-  const {currentPath, setCurrentPath, filesData, backword, forward, recentFile, setRecentFile} = useFileContext()
+  const {currentPath, filesData, darkTheme} = useFileContext()
   const {getInsideFileApi, getFileApi} = useFileManager()
   const [selectIndex, setSelectIndex] = useState(-1)
   const [currentPage, setCurrentPage] = useState(1);
@@ -13,6 +14,10 @@ function AllFile() {
   const startIndex = (currentPage-1) * pageSize;
   const currentData = filesData.slice(startIndex, startIndex + pageSize);
 
+  useEffect(() => {
+    console.log("Page render again alll file")
+    setCurrentPage(1)
+  }, [currentPath])
 
   const getInsideFile = (clickedFile) => {
     // const clickedFile = e.target.textContent;
@@ -27,19 +32,24 @@ function AllFile() {
 
       localStorage.setItem("recent", JSON.stringify(recentTempArr));
     }
-    // console.log(backword)
     getInsideFileApi(path)
   }
-
 
   
   return (
     <>
       <div className="text-black dark:text-white w-full p-4 overflow-y-auto max-h-[78vh]">
         <div className="files flex flex-wrap justify-center mt-4 gap-4">
-          {/* <div>{backword}</div> */}
           {currentData ?  currentData.map((item, index) => {
-            if(typeof item === "string") return <p>No such file or directory</p> 
+            if(typeof item === "string") return(
+              <div>
+                <button className=" bg-primary px-4 py-2 rounded text-white mb-4" 
+                // {darkTheme ? "Light" : "Dark"}
+                  onClick={() => getFileApi(currentData)}
+                >Go to Back</button>
+                <p>No such file or directory</p> 
+              </div>
+            )
             else {
               return (
                 <div
@@ -79,7 +89,7 @@ function AllFile() {
             <button
               className="border px-2 py-1 rounded-md mr-4 bg-primary hover:bg-[#007568bc] hover:scale-95 transition-all duration-200 text-white"
               onClick={() => {
-                console.log("Nex is clicked")
+                // console.log("Next is clicked")
                 setCurrentPage(pre => pre + 1)}}
               disabled={currentPage === totalPages}
             >
@@ -88,6 +98,7 @@ function AllFile() {
           </section>
         }
       </div>
+      {/* <Loading /> */}
     </>
   );
 }
