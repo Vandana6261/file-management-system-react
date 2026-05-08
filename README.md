@@ -17,12 +17,11 @@ A File Management System built with React that allows users to browse, manage, a
 
 ## Project Demo
 
+Local Tool
+
 ![image](assets/image.png)
 ![image](assets/image2.png)
 
-## Demo Video
-
-[Preview](assets/demo.mp4)
 
 ## ✨ Features
 
